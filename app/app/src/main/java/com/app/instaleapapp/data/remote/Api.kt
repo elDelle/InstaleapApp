@@ -6,5 +6,5 @@ import retrofit2.http.GET
 interface Api {
 
     @GET("movie/popular")
-    suspend fun getPopularMovies(): PopularMoviesResponse
+    fun getPopularMovies(): PopularMoviesResponse
 }
