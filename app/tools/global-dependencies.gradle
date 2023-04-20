@@ -3,4 +3,8 @@ ext {
     retrofitVersion = "2.9.0"
     retrofitSerializationVersion = "0.8.0"
     retrofitInterceptorVersion = "5.0.0-alpha.3"
+
+    // Hilt
+    hiltVersion = '2.44'
+    androidxHiltVersion = '2.44'
 }
