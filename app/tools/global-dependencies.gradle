@@ -1,0 +1,6 @@
+ext {
+    // Retrofit
+    retrofitVersion = "2.9.0"
+    retrofitSerializationVersion = "0.8.0"
+    retrofitInterceptorVersion = "5.0.0-alpha.3"
+}

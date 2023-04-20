@@ -63,4 +63,11 @@ dependencies {
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
     debugImplementation 'androidx.compose.ui:ui-tooling'
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
+
+    //Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofitVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.ext.retrofitVersion"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:$rootProject.ext.retrofitSerializationVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.ext.retrofitInterceptorVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofitVersion"
 }
