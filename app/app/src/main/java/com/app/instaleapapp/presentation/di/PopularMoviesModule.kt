@@ -1,8 +1,8 @@
 package com.app.instaleapapp.presentation.di
 
 import com.app.instaleapapp.data.remote.Api
-import com.app.instaleapapp.data.repository.PopularMoviesRepositoryImpl
-import com.app.instaleapapp.domain.repository.PopularMoviesRepository
+import com.app.instaleapapp.data.repository.MoviesRepositoryImpl
+import com.app.instaleapapp.domain.repository.MoviesRepository
 import com.app.instaleapapp.domain.usecases.GetPopularMoviesUseCase
 import dagger.Binds
 import dagger.Module
@@ -23,8 +23,8 @@ object PopularMoviesModule {
     }
 
     @Provides
-    fun providesGetPopularMoviesUseCase(popularMoviesRepository: PopularMoviesRepository): GetPopularMoviesUseCase {
-        return GetPopularMoviesUseCase(popularMoviesRepository)
+    fun providesGetPopularMoviesUseCase(moviesRepository: MoviesRepository): GetPopularMoviesUseCase {
+        return GetPopularMoviesUseCase(moviesRepository)
     }
 
     @Module
@@ -32,6 +32,6 @@ object PopularMoviesModule {
     interface BindModules {
         @Binds
         @Singleton
-        fun bindPopularMoviesRepository(popularMoviesRepositoryImpl: PopularMoviesRepositoryImpl): PopularMoviesRepository
+        fun bindPopularMoviesRepository(popularMoviesRepositoryImpl: MoviesRepositoryImpl): MoviesRepository
     }
 }

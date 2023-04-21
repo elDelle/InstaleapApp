@@ -1,9 +1,8 @@
 package com.app.instaleapapp.data.model
 
-import com.app.instaleapapp.domain.model.PopularMovie
 import com.google.gson.annotations.SerializedName
 
-data class PopularMoviesResponse(
+data class MoviesResponse(
     val page: Int,
     val totalPages: Int,
     val results: List<PopularMovieResponse>,

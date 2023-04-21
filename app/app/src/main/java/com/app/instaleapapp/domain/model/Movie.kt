@@ -2,14 +2,14 @@ package com.app.instaleapapp.domain.model
 
 import com.app.instaleapapp.data.model.PopularMovieResponse
 
-data class PopularMovie(
+data class Movie(
     val id: Int? = null,
     val title: String? = null,
     val poster: String? = null
 )
 
-fun PopularMovieResponse.toDomain(): PopularMovie {
-    return PopularMovie(
+fun PopularMovieResponse.toDomain(): Movie {
+    return Movie(
         this.id,
         this.title,
         PREFIX_URL + this.posterPath
