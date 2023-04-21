@@ -12,6 +12,8 @@ fun PopularMovieResponse.toDomain(): PopularMovie {
     return PopularMovie(
         this.id,
         this.title,
-        this.posterPath
+        PREFIX_URL + this.posterPath
     )
 }
+
+private const val PREFIX_URL = "https://image.tmdb.org/t/p/w500"

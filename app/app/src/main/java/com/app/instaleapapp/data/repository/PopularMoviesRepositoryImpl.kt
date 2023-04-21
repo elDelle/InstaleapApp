@@ -18,7 +18,7 @@ class PopularMoviesRepositoryImpl @Inject constructor(
         }
     }
 
-    private fun getPopularMoviesApi() =
+    private suspend fun getPopularMoviesApi() =
         remoteSource.getPopularMovies().results.map { popularMovie ->
             popularMovie.toDomain()
         }

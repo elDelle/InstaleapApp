@@ -4,7 +4,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.Interceptor
 import okhttp3.Interceptor.*
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -24,11 +23,15 @@ object ConnectionModule {
     @Singleton
     fun provideOkHttpClient(): OkHttpClient {
         val httpClient = OkHttpClient.Builder()
-        httpClient.addInterceptor(Interceptor { chain ->
-            val request =
-                chain.request().newBuilder().addHeader("api_key", API_KEY).build()
-            chain.proceed(request)
-        })
+        httpClient.addInterceptor { chain ->
+            val request = chain.request().newBuilder()
+            val originalHttpUrl = chain.request().url
+            val url =
+                originalHttpUrl.newBuilder().addQueryParameter("api_key", API_KEY)
+                    .build()
+            request.url(url)
+            return@addInterceptor chain.proceed(request.build())
+        }
         return httpClient.build()
     }
 

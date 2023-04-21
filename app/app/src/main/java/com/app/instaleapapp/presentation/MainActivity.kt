@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
@@ -15,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -24,19 +26,31 @@ import androidx.navigation.compose.rememberNavController
 import com.app.instaleapapp.R
 import com.app.instaleapapp.presentation.bottomnav.BottomNavItem
 import com.app.instaleapapp.presentation.bottomnav.HomeScreen
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    private val viewModel: PopularMoviesViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initView()
+        initData()
+    }
+
+    private fun initView() {
         setContent {
-            MainScreen()
+            MainScreen(viewModel)
         }
+    }
+
+    private fun initData() {
+        viewModel.loadPopularMovies()
     }
 }
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun MainScreen() {
+fun MainScreen(viewModel: PopularMoviesViewModel = viewModel()) {
     val navController = rememberNavController()
     val scaffoldState = rememberScaffoldState()
 
@@ -44,7 +58,7 @@ fun MainScreen() {
         scaffoldState = scaffoldState,
         bottomBar = { BottomNavigationBar(navController = navController) }
     ) {
-        NavigationGraph(navController = navController)
+        NavigationGraph(navController = navController, viewModel)
     }
 }
 
@@ -83,10 +97,10 @@ fun BottomNavigationBar(navController: NavController) {
 }
 
 @Composable
-fun NavigationGraph(navController: NavHostController) {
+fun NavigationGraph(navController: NavHostController, viewModel: PopularMoviesViewModel) {
     NavHost(navController = navController, startDestination = BottomNavItem.Home.screenRoute) {
         composable(BottomNavItem.Home.screenRoute) {
-            HomeScreen()
+            HomeScreen(viewModel)
         }
     }
 }
