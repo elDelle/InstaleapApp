@@ -8,6 +8,6 @@ interface Api {
     @GET("movie/popular")
     suspend fun getPopularMovies(): MoviesResponse
 
-    @GET("movie/popular")
+    @GET("movie/top_rated")
     suspend fun getTopRatedMovies(): MoviesResponse
 }

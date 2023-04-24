@@ -5,23 +5,16 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -36,7 +29,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private val viewModel: PopularMoviesViewModel by viewModels()
+    private val viewModel: MoviesViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initView()
@@ -50,13 +43,13 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun initData() {
-        viewModel.loadPopularMovies()
+        viewModel.loadMovies(MoviesViewModel.POPULAR_MOVIES)
     }
 }
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun MainScreen(viewModel: PopularMoviesViewModel = viewModel()) {
+fun MainScreen(viewModel: MoviesViewModel = viewModel()) {
     val navController = rememberNavController()
     val scaffoldState = rememberScaffoldState()
 
@@ -103,7 +96,7 @@ fun BottomNavigationBar(navController: NavController) {
 }
 
 @Composable
-fun NavigationGraph(navController: NavHostController, viewModel: PopularMoviesViewModel) {
+fun NavigationGraph(navController: NavHostController, viewModel: MoviesViewModel) {
     NavHost(navController = navController, startDestination = BottomNavItem.Home.screenRoute) {
         composable(BottomNavItem.Home.screenRoute) {
             HomeScreen(viewModel)
