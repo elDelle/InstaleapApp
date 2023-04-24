@@ -5,9 +5,13 @@ import com.app.instaleapapp.domain.repository.MoviesRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetPopularMoviesUseCase @Inject constructor(private val moviesRepository: MoviesRepository) {
+class GetMoviesUseCase @Inject constructor(private val moviesRepository: MoviesRepository) {
 
-    fun execute(): Flow<List<Movie>> {
+    fun getPopularMovies(): Flow<List<Movie>> {
         return moviesRepository.getPopularMovies()
+    }
+
+    fun getTopRatedMovies(): Flow<List<Movie>> {
+        return moviesRepository.getTopRatedMovies()
     }
 }

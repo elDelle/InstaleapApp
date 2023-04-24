@@ -3,7 +3,7 @@ package com.app.instaleapapp.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.instaleapapp.domain.model.Movie
-import com.app.instaleapapp.domain.usecases.GetPopularMoviesUseCase
+import com.app.instaleapapp.domain.usecases.GetMoviesUseCase
 import com.app.instaleapapp.domain.usecases.GetTopRatedMoviesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MoviesViewModel @Inject constructor(
-    private val getPopularMoviesUseCase: GetPopularMoviesUseCase,
+    private val getMoviesUseCase: GetMoviesUseCase,
     private val topRatedMoviesUseCase: GetTopRatedMoviesUseCase
 ) : ViewModel() {
 
@@ -30,7 +30,7 @@ class MoviesViewModel @Inject constructor(
         _state.update { it.copy(isProgress = true, isError = false) }
 
         if (categoryMovie == POPULAR_MOVIES) {
-            getPopularMoviesUseCase.execute().collect { result ->
+            getMoviesUseCase.getPopularMovies().collect { result ->
                 _state.update {
                     it.copy(response = result, isError = false, isProgress = false)
                 }

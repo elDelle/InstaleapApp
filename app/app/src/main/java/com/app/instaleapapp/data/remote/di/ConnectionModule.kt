@@ -1,5 +1,6 @@
 package com.app.instaleapapp.data.remote.di
 
+import com.app.instaleapapp.data.remote.Api
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -44,5 +45,11 @@ object ConnectionModule {
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideApi(retrofit: Retrofit): Api {
+        return retrofit.create(Api::class.java)
     }
 }

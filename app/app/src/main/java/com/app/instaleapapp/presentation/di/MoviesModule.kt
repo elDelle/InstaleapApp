@@ -3,7 +3,8 @@ package com.app.instaleapapp.presentation.di
 import com.app.instaleapapp.data.remote.Api
 import com.app.instaleapapp.data.repository.MoviesRepositoryImpl
 import com.app.instaleapapp.domain.repository.MoviesRepository
-import com.app.instaleapapp.domain.usecases.GetPopularMoviesUseCase
+import com.app.instaleapapp.domain.usecases.GetMoviesUseCase
+import com.app.instaleapapp.domain.usecases.GetTopRatedMoviesUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -17,14 +18,8 @@ import javax.inject.Singleton
 object MoviesModule {
 
     @Provides
-    @Singleton
-    fun provideApi(retrofit: Retrofit): Api {
-        return retrofit.create(Api::class.java)
-    }
-
-    @Provides
-    fun providesGetPopularMoviesUseCase(moviesRepository: MoviesRepository): GetPopularMoviesUseCase {
-        return GetPopularMoviesUseCase(moviesRepository)
+    fun providesGetMoviesUseCase(moviesRepository: MoviesRepository): GetMoviesUseCase {
+        return GetMoviesUseCase(moviesRepository)
     }
 
     @Module
@@ -32,6 +27,6 @@ object MoviesModule {
     interface BindModules {
         @Binds
         @Singleton
-        fun bindPopularMoviesRepository(popularMoviesRepositoryImpl: MoviesRepositoryImpl): MoviesRepository
+        fun bindMoviesRepository(moviesRepositoryImpl: MoviesRepositoryImpl): MoviesRepository
     }
 }
