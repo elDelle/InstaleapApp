@@ -5,11 +5,11 @@ import com.google.gson.annotations.SerializedName
 data class MoviesResponse(
     val page: Int,
     val totalPages: Int,
-    val results: List<PopularMovieResponse>,
+    val results: List<MovieResponse>,
     val totalResults: Int
 )
 
-data class PopularMovieResponse(
+data class MovieResponse(
     val overview: String? = null,
 
     @SerializedName("original_language")

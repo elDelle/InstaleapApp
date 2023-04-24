@@ -1,17 +1,17 @@
 package com.app.instaleapapp.domain.model
 
-import com.app.instaleapapp.data.model.MovieResponse
+import com.app.instaleapapp.data.model.TVShowResponse
 
-data class Movie(
+data class TVShow(
     val id: Int? = null,
     val title: String? = null,
     val poster: String? = null
 )
 
-fun MovieResponse.toDomain(): Movie {
-    return Movie(
+fun TVShowResponse.toDomain(): TVShow {
+    return TVShow(
         this.id,
-        this.title,
+        this.originalName,
         PREFIX_URL + this.posterPath
     )
 }

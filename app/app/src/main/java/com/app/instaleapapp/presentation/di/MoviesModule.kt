@@ -12,9 +12,9 @@ import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
-@Module(includes = [PopularMoviesModule.BindModules::class])
+@Module(includes = [MoviesModule.BindModules::class])
 @InstallIn(SingletonComponent::class)
-object PopularMoviesModule {
+object MoviesModule {
 
     @Provides
     @Singleton
