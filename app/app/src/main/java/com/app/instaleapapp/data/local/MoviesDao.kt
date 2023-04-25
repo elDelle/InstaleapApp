@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 interface MoviesDao {
 
     @Insert
-    suspend fun saveMovies(users: List<MovieEntity>)
+    suspend fun saveMovies(movies: List<MovieEntity>)
 
     @Query(value = "SELECT * FROM MovieEntity WHERE idCategory = :idCategory")
     fun getMoviesByCategory(idCategory: Int): Flow<List<MovieEntity>>

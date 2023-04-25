@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.app.instaleapapp.data.local.Database
 import com.app.instaleapapp.data.local.MoviesDao
+import com.app.instaleapapp.data.local.TVShowsDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,7 +30,13 @@ object DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideUsersDao(database: Database): MoviesDao {
+    fun provideMoviesDao(database: Database): MoviesDao {
         return database.moviesDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideTVShowsDao(database: Database): TVShowsDao {
+        return database.tvShowsDao()
     }
 }

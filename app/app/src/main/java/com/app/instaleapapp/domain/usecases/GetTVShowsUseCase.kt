@@ -8,12 +8,8 @@ import javax.inject.Inject
 
 class GetTVShowsUseCase @Inject constructor(private val tvShowsRepository: TVShowsRepository) {
 
-    fun getPopular(): Flow<List<TVShow>> {
-        return tvShowsRepository.getPopular()
-    }
-
-    fun getOnTheAir(): Flow<List<TVShow>> {
-        return tvShowsRepository.getOnTheAir()
+    fun getByCategory(idCategory: Int): Flow<Result<List<TVShow>>> {
+        return tvShowsRepository.getByCategory(idCategory)
     }
 
     fun getDetails(idTVShow: Int): Flow<TVShowDetails> {

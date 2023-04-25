@@ -3,10 +3,10 @@ package com.app.instaleapapp.data.local
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.app.instaleapapp.domain.model.Movie
+import com.app.instaleapapp.domain.model.TVShow
 
 @Entity
-class MovieEntity {
+class TVShowEntity {
     @PrimaryKey
     var id: Int? = null
 
@@ -20,8 +20,8 @@ class MovieEntity {
     var idCategory: Int? = null
 }
 
-fun MovieEntity.toDomain(): Movie {
-    return Movie(
+fun TVShowEntity.toDomain(): TVShow {
+    return TVShow(
         this.id,
         this.title,
         this.poster
