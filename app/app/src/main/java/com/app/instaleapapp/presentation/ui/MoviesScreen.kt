@@ -1,5 +1,6 @@
 package com.app.instaleapapp.presentation.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -21,31 +22,39 @@ import com.app.instaleapapp.presentation.utils.NetworkImage
 
 @Composable
 fun MoviesScreen(
-    moviesViewModel: MoviesViewModel = viewModel()
+    moviesViewModel: MoviesViewModel = viewModel(),
+    selectMovie: (Int) -> Unit
 ) {
     val uiMoviesState by moviesViewModel.state.collectAsState()
 
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        MoviesList(uiMoviesState.response)
+        MoviesList(uiMoviesState.response, selectMovie)
     }
 }
 
 @Composable
-fun MoviesList(movies: List<Movie>) {
+fun MoviesList(
+    movies: List<Movie>,
+    selectMovie: (Int) -> Unit
+) {
     LazyVerticalGrid(columns = GridCells.Fixed(2), modifier = Modifier.padding(10.dp)) {
         items(movies.size) {
-            MovieItem(movies[it])
+            MovieItem(movies[it], selectMovie)
         }
     }
 }
 
 @Composable
-fun MovieItem(movie: Movie) {
+fun MovieItem(
+    movie: Movie,
+    selectMovie: (Int) -> Unit = {}
+) {
     Card(
         modifier = Modifier
-            .padding(4.dp),
+            .padding(4.dp)
+            .clickable { movie.id?.let { selectMovie(it) } },
         elevation = 8.dp
     ) {
         Column(

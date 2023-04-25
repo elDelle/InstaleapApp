@@ -1,6 +1,7 @@
 package com.app.instaleapapp.presentation
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -20,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -33,6 +35,7 @@ import androidx.navigation.compose.rememberNavController
 import com.app.instaleapapp.R
 import com.app.instaleapapp.presentation.MoviesViewModel.Companion.POPULAR_MOVIES
 import com.app.instaleapapp.presentation.bottomnav.BottomNavItem
+import com.app.instaleapapp.presentation.ui.MovieDetailActivity
 import com.app.instaleapapp.presentation.ui.MoviesScreen
 import com.app.instaleapapp.presentation.ui.TVShowsScreen
 import com.app.instaleapapp.presentation.ui.ToolbarMovieOption
@@ -80,7 +83,11 @@ fun MainScreen(
 }
 
 @Composable
-fun Toolbar(moviesViewModel: MoviesViewModel, tvShowsViewModel: TVShowsViewModel, navController: NavHostController) {
+fun Toolbar(
+    moviesViewModel: MoviesViewModel,
+    tvShowsViewModel: TVShowsViewModel,
+    navController: NavHostController
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -149,9 +156,15 @@ fun NavigationGraph(
     moviesViewModel: MoviesViewModel,
     tvShowsViewModel: TVShowsViewModel
 ) {
+    val mContext = LocalContext.current
+
     NavHost(navController = navController, startDestination = "movies") {
         composable("movies") {
-            MoviesScreen(moviesViewModel)
+            MoviesScreen(
+                moviesViewModel,
+                selectMovie = {
+                    mContext.startActivity(Intent(mContext, MovieDetailActivity::class.java))
+                })
         }
         composable("tvShows") {
             TVShowsScreen(tvShowsViewModel)
