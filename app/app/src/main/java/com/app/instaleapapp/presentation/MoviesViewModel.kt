@@ -27,17 +27,13 @@ class MoviesViewModel @Inject constructor(
     private fun getMovies(categoryMovie: Int) = viewModelScope.launch {
         _state.update { it.copy(isProgress = true, isError = false) }
 
-        if (categoryMovie == POPULAR) {
-            getMoviesUseCase.getPopular().collect { result ->
+        getMoviesUseCase.getByCategory(categoryMovie).collect { result ->
+            result.onSuccess { moviesList ->
                 _state.update {
-                    it.copy(response = result, isError = false, isProgress = false)
+                    it.copy(response = moviesList, isError = false, isProgress = false)
                 }
-            }
-        } else {
-            getMoviesUseCase.getTopRated().collect { result ->
-                _state.update {
-                    it.copy(response = result, isError = false, isProgress = false)
-                }
+            }.onFailure {
+                //TODO
             }
         }
     }
