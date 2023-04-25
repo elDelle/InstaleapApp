@@ -1,7 +1,7 @@
 package com.app.instaleapapp.domain.repository
 
 import com.app.instaleapapp.domain.model.Movie
-import com.app.instaleapapp.domain.model.MovieDetail
+import com.app.instaleapapp.domain.model.MovieDetails
 import kotlinx.coroutines.flow.Flow
 
 interface MoviesRepository {
@@ -9,5 +9,5 @@ interface MoviesRepository {
 
     fun getTopRated(): Flow<List<Movie>>
 
-    fun getDetails(idMovie: Int): Flow<MovieDetail>
+    fun getDetails(idMovie: Int): Flow<MovieDetails>
 }

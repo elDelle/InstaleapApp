@@ -1,7 +1,7 @@
 package com.app.instaleapapp.domain.usecases
 
 import com.app.instaleapapp.domain.model.Movie
-import com.app.instaleapapp.domain.model.MovieDetail
+import com.app.instaleapapp.domain.model.MovieDetails
 import com.app.instaleapapp.domain.repository.MoviesRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -16,7 +16,7 @@ class GetMoviesUseCase @Inject constructor(private val moviesRepository: MoviesR
         return moviesRepository.getTopRated()
     }
 
-    fun getDetails(idMovie: Int): Flow<MovieDetail> {
+    fun getDetails(idMovie: Int): Flow<MovieDetails> {
         return moviesRepository.getDetails(idMovie)
     }
 }
