@@ -1,8 +1,10 @@
 package com.app.instaleapapp.data.remote
 
+import com.app.instaleapapp.data.model.MovieDetailsResponse
 import com.app.instaleapapp.data.model.MoviesResponse
 import com.app.instaleapapp.data.model.TVShowsResponse
 import retrofit2.http.GET
+import retrofit2.http.Path
 
 interface Api {
 
@@ -11,6 +13,9 @@ interface Api {
 
     @GET("movie/top_rated")
     suspend fun getTopRatedMovies(): MoviesResponse
+
+    @GET("movie/{movie_id}")
+    suspend fun getDetailsMovie(@Path("movie_id") id: Int): MovieDetailsResponse
 
     @GET("tv/popular")
     suspend fun getPopularTVShows(): TVShowsResponse

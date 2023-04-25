@@ -53,7 +53,9 @@ fun TVShowItem(tvShow: TVShow, selectTVShow: (Int) -> Unit = {}) {
             verticalArrangement = Arrangement.Center
         ) {
             NetworkImage(
-                modifier = Modifier.aspectRatio(0.8f), url = tvShow.poster.toString()
+                modifier = Modifier.aspectRatio(0.8f),
+                url = tvShow.poster.toString(),
+                circularRevealEnabled = true
             )
         }
     }

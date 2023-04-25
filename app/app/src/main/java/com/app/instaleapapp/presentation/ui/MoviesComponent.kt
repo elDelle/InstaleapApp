@@ -62,7 +62,8 @@ fun MovieItem(
             NetworkImage(
                 modifier = Modifier
                     .aspectRatio(0.8f),
-                url = movie.poster.toString()
+                url = movie.poster.toString(),
+                circularRevealEnabled = true
             )
         }
     }
