@@ -14,4 +14,7 @@ interface Api {
 
     @GET("tv/popular")
     suspend fun getPopularTVShows(): TVShowsResponse
+
+    @GET("tv/on_the_air")
+    suspend fun getOnTheAirTVShows(): TVShowsResponse
 }

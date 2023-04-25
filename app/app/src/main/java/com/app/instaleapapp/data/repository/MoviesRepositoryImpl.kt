@@ -12,7 +12,7 @@ class MoviesRepositoryImpl @Inject constructor(
     private val remoteSource: Api
 ) : MoviesRepository {
 
-    override fun getPopularMovies(): Flow<List<Movie>> {
+    override fun getPopular(): Flow<List<Movie>> {
         return flow {
             emit(getPopularMoviesApi())
         }
@@ -23,7 +23,7 @@ class MoviesRepositoryImpl @Inject constructor(
             popularMovie.toDomain()
         }
 
-    override fun getTopRatedMovies(): Flow<List<Movie>> {
+    override fun getTopRated(): Flow<List<Movie>> {
         return flow {
             emit(getTopRatedMoviesApi())
         }

@@ -1,23 +1,25 @@
 package com.app.instaleapapp.presentation
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
-import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -33,9 +35,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.app.instaleapapp.R
-import com.app.instaleapapp.presentation.MoviesViewModel.Companion.POPULAR_MOVIES
+import com.app.instaleapapp.presentation.MoviesViewModel.Companion.POPULAR
 import com.app.instaleapapp.presentation.bottomnav.BottomNavItem
-import com.app.instaleapapp.presentation.ui.MovieDetailActivity
 import com.app.instaleapapp.presentation.ui.MoviesScreen
 import com.app.instaleapapp.presentation.ui.TVShowsScreen
 import com.app.instaleapapp.presentation.ui.ToolbarMovieOption
@@ -60,7 +61,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun initData() {
-        moviesViewModel.loadMovies(POPULAR_MOVIES)
+        moviesViewModel.loadMovies(POPULAR)
     }
 }
 
@@ -73,12 +74,11 @@ fun MainScreen(
     val navController = rememberNavController()
     val scaffoldState = rememberScaffoldState()
 
-    Scaffold(
-        scaffoldState = scaffoldState,
-        bottomBar = { BottomNavigationBar(navController = navController) },
-        topBar = { Toolbar(moviesViewModel, tvShowsViewModel, navController) }
-    ) {
-        NavigationGraph(navController = navController, moviesViewModel, tvShowsViewModel)
+    val isMoviesListVisible = remember { mutableStateOf(true) }
+
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Toolbar(moviesViewModel, tvShowsViewModel, isMoviesListVisible)
+        ContentView(moviesViewModel, tvShowsViewModel, isMoviesListVisible)
     }
 }
 
@@ -86,7 +86,7 @@ fun MainScreen(
 fun Toolbar(
     moviesViewModel: MoviesViewModel,
     tvShowsViewModel: TVShowsViewModel,
-    navController: NavHostController
+    isMoviesListVisible: MutableState<Boolean>
 ) {
     Row(
         modifier = Modifier
@@ -102,17 +102,36 @@ fun Toolbar(
         ToolbarMovieOption(
             "Movies", Modifier
                 .weight(1f)
-                .padding(20.dp, 16.dp, 0.dp, 0.dp),
-            moviesViewModel,
-            navController
-        )
+                .padding(20.dp, 16.dp, 0.dp, 0.dp)
+        ) {
+            moviesViewModel.loadMovies(it)
+            isMoviesListVisible.value = true
+        }
         ToolbarTVShowOption(
             "TV Shows", Modifier
                 .weight(1f)
-                .padding(20.dp, 16.dp, 0.dp, 0.dp),
-            tvShowsViewModel,
-            navController
-        )
+                .padding(20.dp, 16.dp, 0.dp, 0.dp)
+        ) {
+            tvShowsViewModel.loadTVShows(it)
+            isMoviesListVisible.value = false
+        }
+    }
+}
+
+@Composable
+fun ContentView(
+    moviesViewModel: MoviesViewModel,
+    tvShowsViewModel: TVShowsViewModel,
+    isMoviesListVisible: MutableState<Boolean>
+) {
+    if (isMoviesListVisible.value) {
+        MoviesScreen(moviesViewModel) {
+
+        }
+    } else {
+        TVShowsScreen(tvShowsViewModel) {
+
+        }
     }
 }
 
@@ -163,11 +182,15 @@ fun NavigationGraph(
             MoviesScreen(
                 moviesViewModel,
                 selectMovie = {
-                    mContext.startActivity(Intent(mContext, MovieDetailActivity::class.java))
+
                 })
         }
         composable("tvShows") {
-            TVShowsScreen(tvShowsViewModel)
+            TVShowsScreen(
+                tvShowsViewModel,
+                selectTVShow = {
+
+                })
         }
     }
 }

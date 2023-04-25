@@ -7,11 +7,11 @@ import javax.inject.Inject
 
 class GetMoviesUseCase @Inject constructor(private val moviesRepository: MoviesRepository) {
 
-    fun getPopularMovies(): Flow<List<Movie>> {
-        return moviesRepository.getPopularMovies()
+    fun getPopular(): Flow<List<Movie>> {
+        return moviesRepository.getPopular()
     }
 
-    fun getTopRatedMovies(): Flow<List<Movie>> {
-        return moviesRepository.getTopRatedMovies()
+    fun getTopRated(): Flow<List<Movie>> {
+        return moviesRepository.getTopRated()
     }
 }

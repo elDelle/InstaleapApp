@@ -10,19 +10,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
+import com.app.instaleapapp.R
 import com.app.instaleapapp.presentation.MoviesViewModel
 import com.app.instaleapapp.presentation.TVShowsViewModel
 
 @Composable
 fun CustomMovieDialog(
-    options: List<String>,
     setShowDialog: (Boolean) -> Unit,
-    viewModel: MoviesViewModel,
-    navController: NavHostController
+    setOption: (Int) -> Unit = {}
 ) {
     Dialog(
         onDismissRequest = { setShowDialog(false) },
@@ -36,28 +34,18 @@ fun CustomMovieDialog(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                TextButton(
-                    onClick = {
-                        setShowDialog(false)
-                        navController.navigate("movies")
-                        viewModel.loadMovies(MoviesViewModel.POPULAR_MOVIES)
-                    }) {
-                    Text(
-                        text = options[0],
-                        color = Color(0xFF35898f)
-                    )
-                }
-                TextButton(
-                    onClick = {
-                        setShowDialog(false)
-                        navController.navigate("movies")
-                        viewModel.loadMovies(MoviesViewModel.TOP_RATED_MOVIES)
-                    }) {
-                    Text(
-                        text = options[1],
-                        color = Color(0xFF35898f)
-                    )
-                }
+                DialogOption(
+                    setShowDialog,
+                    setOption,
+                    MoviesViewModel.POPULAR,
+                    R.string.popular_movies
+                )
+                DialogOption(
+                    setShowDialog,
+                    setOption,
+                    MoviesViewModel.TOP_RATED,
+                    R.string.top_rated_movies
+                )
             }
         }
     }
@@ -65,10 +53,8 @@ fun CustomMovieDialog(
 
 @Composable
 fun CustomTVShowDialog(
-    options: List<String>,
     setShowDialog: (Boolean) -> Unit,
-    viewModel: TVShowsViewModel,
-    navController: NavHostController
+    setOption: (Int) -> Unit = {}
 ) {
     Dialog(
         onDismissRequest = { setShowDialog(false) },
@@ -82,22 +68,41 @@ fun CustomTVShowDialog(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                TextButton(
-                    onClick = {
-                        setShowDialog(false)
-                        navController.navigate("tvShows") {
-                            popUpTo("movies") {
-                                inclusive = true
-                            }
-                        }
-                        viewModel.loadTVShows(MoviesViewModel.POPULAR_MOVIES)
-                    }) {
-                    Text(
-                        text = options[0],
-                        color = Color(0xFF35898f)
-                    )
-                }
+                DialogOption(
+                    setShowDialog,
+                    setOption,
+                    TVShowsViewModel.POPULAR,
+                    R.string.popular_tv_shows
+                )
+                DialogOption(
+                    setShowDialog,
+                    setOption,
+                    TVShowsViewModel.ON_THE_AIR,
+                    R.string.on_the_air_tv_shows
+                )
             }
         }
+    }
+}
+
+@Composable
+private fun DialogOption(
+    setShowDialog: (Boolean) -> Unit,
+    setOption: (Int) -> Unit,
+    option: Int,
+    optionResource: Int
+) {
+
+    val mContext = LocalContext.current
+
+    TextButton(
+        onClick = {
+            setShowDialog(false)
+            setOption(option)
+        }) {
+        Text(
+            text = mContext.getString(optionResource),
+            color = Color.Black,
+        )
     }
 }

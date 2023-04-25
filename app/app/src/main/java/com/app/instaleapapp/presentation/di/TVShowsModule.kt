@@ -2,7 +2,7 @@ package com.app.instaleapapp.presentation.di
 
 import com.app.instaleapapp.data.repository.TVShowsRepositoryImpl
 import com.app.instaleapapp.domain.repository.TVShowsRepository
-import com.app.instaleapapp.domain.usecases.GetPopularTVShowsUseCase
+import com.app.instaleapapp.domain.usecases.GetTVShowsUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -15,8 +15,8 @@ import javax.inject.Singleton
 object TVShowsModule {
 
     @Provides
-    fun providesGetPopularTVShowsUseCase(tvShowsRepository: TVShowsRepository): GetPopularTVShowsUseCase {
-        return GetPopularTVShowsUseCase(tvShowsRepository)
+    fun providesGetPopularTVShowsUseCase(tvShowsRepository: TVShowsRepository): GetTVShowsUseCase {
+        return GetTVShowsUseCase(tvShowsRepository)
     }
 
     @Module

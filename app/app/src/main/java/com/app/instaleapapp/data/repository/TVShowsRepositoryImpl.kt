@@ -12,14 +12,25 @@ class TVShowsRepositoryImpl @Inject constructor(
     private val remoteSource: Api
 ) : TVShowsRepository {
 
-    override fun getPopularTVShows(): Flow<List<TVShow>> {
+    override fun getPopular(): Flow<List<TVShow>> {
         return flow {
-            emit(getPopularTVShowsApi())
+            emit(getPopularApi())
         }
     }
 
-    private suspend fun getPopularTVShowsApi() =
+    private suspend fun getPopularApi() =
         remoteSource.getPopularTVShows().results.map { popularTVShow ->
             popularTVShow.toDomain()
+        }
+
+    override fun getOnTheAir(): Flow<List<TVShow>> {
+        return flow {
+            emit(getOnTheAirApi())
+        }
+    }
+
+    private suspend fun getOnTheAirApi() =
+        remoteSource.getOnTheAirTVShows().results.map { onTheAirTVShow ->
+            onTheAirTVShow.toDomain()
         }
 }

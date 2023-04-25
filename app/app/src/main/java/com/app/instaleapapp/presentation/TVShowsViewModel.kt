@@ -3,7 +3,7 @@ package com.app.instaleapapp.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.instaleapapp.domain.model.TVShow
-import com.app.instaleapapp.domain.usecases.GetPopularTVShowsUseCase
+import com.app.instaleapapp.domain.usecases.GetTVShowsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TVShowsViewModel @Inject constructor(
-    private val getTVShowsUseCase: GetPopularTVShowsUseCase
+    private val getTVShowsUseCase: GetTVShowsUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(State())
@@ -27,14 +27,14 @@ class TVShowsViewModel @Inject constructor(
     private fun getTVShows(categoryTVShow: Int) = viewModelScope.launch {
         _state.update { it.copy(isProgress = true, isError = false) }
 
-        if (categoryTVShow == POPULAR_TV_SHOWS) {
-            getTVShowsUseCase.execute().collect { result ->
+        if (categoryTVShow == POPULAR) {
+            getTVShowsUseCase.getPopular().collect { result ->
                 _state.update {
                     it.copy(response = result, isError = false, isProgress = false)
                 }
             }
         } else {
-            getTVShowsUseCase.execute().collect { result ->
+            getTVShowsUseCase.getOnTheAir().collect { result ->
                 _state.update {
                     it.copy(response = result, isError = false, isProgress = false)
                 }
@@ -49,6 +49,7 @@ class TVShowsViewModel @Inject constructor(
     )
 
     companion object {
-        const val POPULAR_TV_SHOWS = 1
+        const val POPULAR = 1
+        const val ON_THE_AIR = 2
     }
 }

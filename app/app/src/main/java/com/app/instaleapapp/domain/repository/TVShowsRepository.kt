@@ -4,5 +4,6 @@ import com.app.instaleapapp.domain.model.TVShow
 import kotlinx.coroutines.flow.Flow
 
 interface TVShowsRepository {
-    fun getPopularTVShows(): Flow<List<TVShow>>
+    fun getPopular(): Flow<List<TVShow>>
+    fun getOnTheAir(): Flow<List<TVShow>>
 }

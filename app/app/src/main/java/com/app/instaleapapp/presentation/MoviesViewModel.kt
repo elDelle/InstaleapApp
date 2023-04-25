@@ -27,14 +27,14 @@ class MoviesViewModel @Inject constructor(
     private fun getMovies(categoryMovie: Int) = viewModelScope.launch {
         _state.update { it.copy(isProgress = true, isError = false) }
 
-        if (categoryMovie == POPULAR_MOVIES) {
-            getMoviesUseCase.getPopularMovies().collect { result ->
+        if (categoryMovie == POPULAR) {
+            getMoviesUseCase.getPopular().collect { result ->
                 _state.update {
                     it.copy(response = result, isError = false, isProgress = false)
                 }
             }
         } else {
-            getMoviesUseCase.getTopRatedMovies().collect { result ->
+            getMoviesUseCase.getTopRated().collect { result ->
                 _state.update {
                     it.copy(response = result, isError = false, isProgress = false)
                 }
@@ -49,7 +49,7 @@ class MoviesViewModel @Inject constructor(
     )
 
     companion object {
-        const val POPULAR_MOVIES = 1
-        const val TOP_RATED_MOVIES = 2
+        const val POPULAR = 1
+        const val TOP_RATED = 2
     }
 }

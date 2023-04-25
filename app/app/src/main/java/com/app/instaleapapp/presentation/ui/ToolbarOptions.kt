@@ -8,16 +8,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.navigation.NavHostController
-import com.app.instaleapapp.presentation.MoviesViewModel
-import com.app.instaleapapp.presentation.TVShowsViewModel
 
 @Composable
 fun ToolbarMovieOption(
     text: String,
     modifier: Modifier,
-    viewModel: MoviesViewModel,
-    navController: NavHostController
+    setOption: (Int) -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -26,12 +22,10 @@ fun ToolbarMovieOption(
 
         if (showDialog.value)
             CustomMovieDialog(
-                options = listOf("Popular Movies", "Top Rated Movies"),
                 setShowDialog = {
                     showDialog.value = it
                 },
-                viewModel,
-                navController
+                setOption
             )
         TextButton(
             onClick = {
@@ -49,8 +43,7 @@ fun ToolbarMovieOption(
 fun ToolbarTVShowOption(
     text: String,
     modifier: Modifier,
-    viewModel: TVShowsViewModel,
-    navController: NavHostController
+    setOption: (Int) -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -59,12 +52,10 @@ fun ToolbarTVShowOption(
 
         if (showDialog.value)
             CustomTVShowDialog(
-                options = listOf("Popular TV Shows"),
                 setShowDialog = {
                     showDialog.value = it
                 },
-                viewModel,
-                navController
+                setOption
             )
         TextButton(
             onClick = {

@@ -26,12 +26,7 @@ fun MoviesScreen(
     selectMovie: (Int) -> Unit
 ) {
     val uiMoviesState by moviesViewModel.state.collectAsState()
-
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        MoviesList(uiMoviesState.response, selectMovie)
-    }
+    MoviesList(uiMoviesState.response, selectMovie)
 }
 
 @Composable
