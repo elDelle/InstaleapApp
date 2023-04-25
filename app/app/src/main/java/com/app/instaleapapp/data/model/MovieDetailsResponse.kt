@@ -13,7 +13,7 @@ data class MovieDetailsResponse(
 
     @SerializedName("backdrop_path")
     val backdropPath: String? = null,
-    val revenue: Int? = null,
+    val revenue: Any? = null,
     val genres: List<GenresItem> = listOf(),
     val popularity: Any? = null,
 
@@ -43,7 +43,7 @@ data class MovieDetailsResponse(
     val releaseDate: String? = null,
 
     @SerializedName("vote_average")
-    val voteAverage: Long? = null,
+    val voteAverage: Any? = null,
 
     @SerializedName("belongs_to_collection")
     val belongsToCollection: Any? = null,

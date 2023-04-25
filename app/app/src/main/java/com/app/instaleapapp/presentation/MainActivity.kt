@@ -18,11 +18,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -30,6 +28,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.app.instaleapapp.R
 import com.app.instaleapapp.presentation.MoviesViewModel.Companion.POPULAR
+import com.app.instaleapapp.presentation.ui.MovieDetails
 import com.app.instaleapapp.presentation.ui.MoviesScreen
 import com.app.instaleapapp.presentation.ui.TVShowsScreen
 import com.app.instaleapapp.presentation.ui.ToolbarMovieOption
@@ -39,6 +38,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val moviesViewModel: MoviesViewModel by viewModels()
+    private val movieDetailsViewModel: MovieDetailsViewModel by viewModels()
     private val tvShowsViewModel: TVShowsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity() {
 
     private fun initView() {
         setContent {
-            MainScreen(moviesViewModel, tvShowsViewModel)
+            MainScreen(moviesViewModel, movieDetailsViewModel, tvShowsViewModel)
         }
     }
 
@@ -62,13 +62,14 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreen(
     moviesViewModel: MoviesViewModel = viewModel(),
+    moviesDetailsViewModel: MovieDetailsViewModel = viewModel(),
     tvShowsViewModel: TVShowsViewModel = viewModel()
 ) {
     val isMoviesListVisible = remember { mutableStateOf(true) }
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Toolbar(moviesViewModel, tvShowsViewModel, isMoviesListVisible)
-        ContentView(moviesViewModel, tvShowsViewModel, isMoviesListVisible)
+        ContentView(moviesViewModel, moviesDetailsViewModel, tvShowsViewModel, isMoviesListVisible)
     }
 }
 
@@ -111,6 +112,7 @@ fun Toolbar(
 @Composable
 fun ContentView(
     moviesViewModel: MoviesViewModel,
+    movieDetailsViewModel: MovieDetailsViewModel,
     tvShowsViewModel: TVShowsViewModel,
     isMoviesListVisible: MutableState<Boolean>
 ) {
@@ -132,32 +134,11 @@ fun ContentView(
             arguments = listOf(
                 navArgument(NavScreen.MovieDetails.argument0) { type = NavType.LongType }
             )
-        ) {}
-    }
-}
-
-@Composable
-fun NavigationGraph(
-    navController: NavHostController,
-    moviesViewModel: MoviesViewModel,
-    tvShowsViewModel: TVShowsViewModel
-) {
-    val mContext = LocalContext.current
-
-    NavHost(navController = navController, startDestination = "movies") {
-        composable("movies") {
-            MoviesScreen(
-                moviesViewModel,
-                selectMovie = {
-
-                })
-        }
-        composable("tvShows") {
-            TVShowsScreen(
-                tvShowsViewModel,
-                selectTVShow = {
-
-                })
+        ) { backStackEntry ->
+            val idMovie =
+                backStackEntry.arguments?.getLong(NavScreen.MovieDetails.argument0)
+                    ?: return@composable
+            MovieDetails(idMovie.toInt(), movieDetailsViewModel)
         }
     }
 }
