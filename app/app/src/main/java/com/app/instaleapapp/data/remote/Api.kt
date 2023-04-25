@@ -2,6 +2,7 @@ package com.app.instaleapapp.data.remote
 
 import com.app.instaleapapp.data.model.MovieDetailsResponse
 import com.app.instaleapapp.data.model.MoviesResponse
+import com.app.instaleapapp.data.model.TVShowDetailsResponse
 import com.app.instaleapapp.data.model.TVShowsResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -22,4 +23,7 @@ interface Api {
 
     @GET("tv/on_the_air")
     suspend fun getOnTheAirTVShows(): TVShowsResponse
+
+    @GET("tv/{tv_id}")
+    suspend fun getDetailsTVShow(@Path("tv_id") id: Int): TVShowDetailsResponse
 }

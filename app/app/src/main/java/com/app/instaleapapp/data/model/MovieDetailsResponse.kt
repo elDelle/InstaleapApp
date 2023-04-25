@@ -14,11 +14,11 @@ data class MovieDetailsResponse(
     @SerializedName("backdrop_path")
     val backdropPath: String? = null,
     val revenue: Any? = null,
-    val genres: List<GenresItem> = listOf(),
+    val genres: List<MovieGenresItem> = listOf(),
     val popularity: Any? = null,
 
     @SerializedName("production_countries")
-    val productionCountries: List<ProductionCountriesItem> = listOf(),
+    val productionCountries: List<MovieProductionCountriesItem> = listOf(),
     val id: Int,
 
     @SerializedName("vote_count")
@@ -34,7 +34,7 @@ data class MovieDetailsResponse(
     val posterPath: String? = null,
 
     @SerializedName("spoken_languages")
-    val spokenLanguages: List<SpokenLanguagesItem> = listOf(),
+    val spokenLanguages: List<MovieSpokenLanguagesItem> = listOf(),
 
     @SerializedName("production_companies")
     val productionCompanies: List<ProductionCompaniesItem> = listOf(),
@@ -53,7 +53,7 @@ data class MovieDetailsResponse(
     val status: String? = null
 )
 
-data class ProductionCountriesItem(
+data class MovieProductionCountriesItem(
     val iso31661: String? = null,
     val name: String? = null
 )
@@ -68,7 +68,7 @@ data class ProductionCompaniesItem(
     val originCountry: String? = null
 )
 
-data class SpokenLanguagesItem(
+data class MovieSpokenLanguagesItem(
     val name: String? = null,
     val iso6391: String? = null,
 
@@ -76,7 +76,7 @@ data class SpokenLanguagesItem(
     val englishName: String? = null
 )
 
-data class GenresItem(
+data class MovieGenresItem(
     val name: String? = null,
     val id: Int
 )
