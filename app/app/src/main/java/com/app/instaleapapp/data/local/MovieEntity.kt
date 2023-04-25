@@ -15,6 +15,9 @@ class MovieEntity {
 
     @ColumnInfo("phone")
     var poster: String? = null
+
+    @ColumnInfo("idCategory")
+    var idCategory: Int? = null
 }
 
 fun MovieEntity.toDomain(): Movie {

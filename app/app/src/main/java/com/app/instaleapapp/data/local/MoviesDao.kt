@@ -11,6 +11,6 @@ interface MoviesDao {
     @Insert
     suspend fun saveMovies(users: List<MovieEntity>)
 
-    @Query(value = "SELECT * FROM MovieEntity")
-    fun getMovies(): Flow<List<MovieEntity>>
+    @Query(value = "SELECT * FROM MovieEntity WHERE idCategory = :idCategory")
+    fun getMoviesByCategory(idCategory: Int): Flow<List<MovieEntity>>
 }

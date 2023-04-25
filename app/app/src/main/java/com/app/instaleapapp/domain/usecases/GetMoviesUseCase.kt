@@ -8,12 +8,8 @@ import javax.inject.Inject
 
 class GetMoviesUseCase @Inject constructor(private val moviesRepository: MoviesRepository) {
 
-    fun getPopular(): Flow<List<Movie>> {
-        return moviesRepository.getPopular()
-    }
-
-    fun getTopRated(): Flow<List<Movie>> {
-        return moviesRepository.getTopRated()
+    fun getByCategory(idCategory: Int): Flow<Result<List<Movie>>> {
+        return moviesRepository.getByCategory(idCategory)
     }
 
     fun getDetails(idMovie: Int): Flow<MovieDetails> {

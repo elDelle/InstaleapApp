@@ -5,9 +5,7 @@ import com.app.instaleapapp.domain.model.MovieDetails
 import kotlinx.coroutines.flow.Flow
 
 interface MoviesRepository {
-    fun getPopular(): Flow<List<Movie>>
-
-    fun getTopRated(): Flow<List<Movie>>
+    fun getByCategory(idCategory: Int): Flow<Result<List<Movie>>>
 
     fun getDetails(idMovie: Int): Flow<MovieDetails>
 }
