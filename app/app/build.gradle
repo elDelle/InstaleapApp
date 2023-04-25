@@ -86,6 +86,13 @@ dependencies {
     implementation "com.github.skydoves:landscapist-palette:2.1.11"
     implementation "com.github.skydoves:landscapist-animation:2.1.11"
 
+    //Room
+    //Room
+    implementation "androidx.room:room-ktx:$rootProject.ext.roomVersion"
+    implementation "androidx.room:room-runtime:$rootProject.ext.roomVersion"
+    annotationProcessor "androidx.room:room-compiler:$rootProject.ext.roomVersion"
+    kapt "androidx.room:room-compiler:$rootProject.ext.roomVersion"
+
     constraints {
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0") {
             because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib")

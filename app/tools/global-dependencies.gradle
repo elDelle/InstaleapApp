@@ -10,4 +10,7 @@ ext {
 
     //Compose
     navigationComposeVersion = "2.6.0-beta01"
+
+    //Room
+    roomVersion = '2.5.1'
 }
