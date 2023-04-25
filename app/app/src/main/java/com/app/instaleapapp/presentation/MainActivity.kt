@@ -30,6 +30,7 @@ import com.app.instaleapapp.R
 import com.app.instaleapapp.presentation.MoviesViewModel.Companion.POPULAR
 import com.app.instaleapapp.presentation.ui.MovieDetails
 import com.app.instaleapapp.presentation.ui.MoviesScreen
+import com.app.instaleapapp.presentation.ui.TVShowDetails
 import com.app.instaleapapp.presentation.ui.TVShowsScreen
 import com.app.instaleapapp.presentation.ui.ToolbarMovieOption
 import com.app.instaleapapp.presentation.ui.ToolbarTVShowOption
@@ -40,6 +41,7 @@ class MainActivity : ComponentActivity() {
     private val moviesViewModel: MoviesViewModel by viewModels()
     private val movieDetailsViewModel: MovieDetailsViewModel by viewModels()
     private val tvShowsViewModel: TVShowsViewModel by viewModels()
+    private val tvShowDetailsViewModel: TVShowDetailsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,13 +65,20 @@ class MainActivity : ComponentActivity() {
 fun MainScreen(
     moviesViewModel: MoviesViewModel = viewModel(),
     moviesDetailsViewModel: MovieDetailsViewModel = viewModel(),
-    tvShowsViewModel: TVShowsViewModel = viewModel()
+    tvShowsViewModel: TVShowsViewModel = viewModel(),
+    tvShowDetailsViewModel: TVShowDetailsViewModel = viewModel()
 ) {
     val isMoviesListVisible = remember { mutableStateOf(true) }
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Toolbar(moviesViewModel, tvShowsViewModel, isMoviesListVisible)
-        ContentView(moviesViewModel, moviesDetailsViewModel, tvShowsViewModel, isMoviesListVisible)
+        ContentView(
+            moviesViewModel,
+            moviesDetailsViewModel,
+            tvShowsViewModel,
+            tvShowDetailsViewModel,
+            isMoviesListVisible
+        )
     }
 }
 
@@ -114,6 +123,7 @@ fun ContentView(
     moviesViewModel: MoviesViewModel,
     movieDetailsViewModel: MovieDetailsViewModel,
     tvShowsViewModel: TVShowsViewModel,
+    tvShowDetailsViewModel: TVShowDetailsViewModel,
     isMoviesListVisible: MutableState<Boolean>
 ) {
     val navController = rememberNavController()
@@ -139,6 +149,17 @@ fun ContentView(
                 backStackEntry.arguments?.getLong(NavScreen.MovieDetails.argument0)
                     ?: return@composable
             MovieDetails(idMovie.toInt(), movieDetailsViewModel)
+        }
+        composable(
+            route = NavScreen.TVShowDetails.routeWithArgument,
+            arguments = listOf(
+                navArgument(NavScreen.TVShowDetails.argument0) { type = NavType.LongType }
+            )
+        ) { backStackEntry ->
+            val idTVShow =
+                backStackEntry.arguments?.getLong(NavScreen.TVShowDetails.argument0)
+                    ?: return@composable
+            TVShowDetails(idTVShow.toInt(), tvShowDetailsViewModel)
         }
     }
 }
