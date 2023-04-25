@@ -2,8 +2,8 @@ package com.app.instaleapapp.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.app.instaleapapp.domain.model.Movie
-import com.app.instaleapapp.domain.usecases.GetMoviesUseCase
+import com.app.instaleapapp.domain.model.TVShow
+import com.app.instaleapapp.domain.usecases.GetPopularTVShowsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,28 +13,28 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MoviesViewModel @Inject constructor(
-    private val getMoviesUseCase: GetMoviesUseCase
+class TVShowsViewModel @Inject constructor(
+    private val getTVShowsUseCase: GetPopularTVShowsUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(State())
     val state: StateFlow<State> = _state.asStateFlow()
 
-    fun loadMovies(categoryMovie: Int) {
-        getMovies(categoryMovie)
+    fun loadTVShows(categoryTVShow: Int) {
+        getTVShows(categoryTVShow)
     }
 
-    private fun getMovies(categoryMovie: Int) = viewModelScope.launch {
+    private fun getTVShows(categoryTVShow: Int) = viewModelScope.launch {
         _state.update { it.copy(isProgress = true, isError = false) }
 
-        if (categoryMovie == POPULAR_MOVIES) {
-            getMoviesUseCase.getPopularMovies().collect { result ->
+        if (categoryTVShow == POPULAR_TV_SHOWS) {
+            getTVShowsUseCase.execute().collect { result ->
                 _state.update {
                     it.copy(response = result, isError = false, isProgress = false)
                 }
             }
         } else {
-            getMoviesUseCase.getTopRatedMovies().collect { result ->
+            getTVShowsUseCase.execute().collect { result ->
                 _state.update {
                     it.copy(response = result, isError = false, isProgress = false)
                 }
@@ -43,13 +43,12 @@ class MoviesViewModel @Inject constructor(
     }
 
     data class State(
-        val response: List<Movie> = listOf(),
+        val response: List<TVShow> = listOf(),
         val isError: Boolean = false,
         val isProgress: Boolean = false,
     )
 
     companion object {
-        const val POPULAR_MOVIES = 1
-        const val TOP_RATED_MOVIES = 2
+        const val POPULAR_TV_SHOWS = 1
     }
 }
