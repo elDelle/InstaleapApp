@@ -3,6 +3,7 @@ package com.app.instaleapapp.data.local.di
 import android.content.Context
 import androidx.room.Room
 import com.app.instaleapapp.data.local.Database
+import com.app.instaleapapp.data.local.MoviesDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,5 +25,11 @@ object DatabaseModule {
             Database::class.java,
             DATABASE_NAME
         ).build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideUsersDao(database: Database): MoviesDao {
+        return database.moviesDao()
     }
 }

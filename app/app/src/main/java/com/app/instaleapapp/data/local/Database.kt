@@ -6,6 +6,10 @@ import androidx.room.RoomDatabase
 private const val DATABASE_VERSION = 1
 
 @Database(
+    entities = [MovieEntity::class],
     version = DATABASE_VERSION
 )
-abstract class Database : RoomDatabase()
+abstract class Database : RoomDatabase() {
+
+    abstract fun moviesDao(): MoviesDao
+}
