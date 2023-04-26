@@ -28,8 +28,12 @@ class MovieDetailsViewModel @Inject constructor(
         _state.update { it.copy(isProgress = true, isError = false) }
 
         getMoviesUseCase.getDetails(idMovie).collect() { result ->
-            _state.update {
-                it.copy(response = result, isError = false, isProgress = false)
+            result.onSuccess { movieDetails ->
+                _state.update {
+                    it.copy(response = movieDetails, isError = false, isProgress = false)
+                }
+            }.onFailure {
+                // TODO
             }
         }
     }

@@ -7,8 +7,12 @@ private const val DATABASE_VERSION = 1
 
 @Database(
     entities = [
-        MovieEntity::class,
-        TVShowEntity::class],
+        PopularMovieEntity::class,
+        TopRatedMovieEntity::class,
+        MovieDetailsEntity::class,
+        PopularTVShowEntity::class,
+        OnTheAirTVShowEntity::class,
+        TVShowDetailsEntity::class],
     version = DATABASE_VERSION
 )
 abstract class Database : RoomDatabase() {

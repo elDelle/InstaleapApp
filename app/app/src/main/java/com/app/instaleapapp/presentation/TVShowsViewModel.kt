@@ -24,20 +24,16 @@ class TVShowsViewModel @Inject constructor(
         getTVShows(categoryTVShow)
     }
 
-    private fun getTVShows(categoryTVShow: Int) = viewModelScope.launch {
+    private fun getTVShows(idCategory: Int) = viewModelScope.launch {
         _state.update { it.copy(isProgress = true, isError = false) }
 
-        if (categoryTVShow == POPULAR) {
-            getTVShowsUseCase.getPopular().collect { result ->
+        getTVShowsUseCase.getByCategory(idCategory).collect { result ->
+            result.onSuccess { tvShowsList ->
                 _state.update {
-                    it.copy(response = result, isError = false, isProgress = false)
+                    it.copy(response = tvShowsList, isError = false, isProgress = false)
                 }
-            }
-        } else {
-            getTVShowsUseCase.getOnTheAir().collect { result ->
-                _state.update {
-                    it.copy(response = result, isError = false, isProgress = false)
-                }
+            }.onFailure {
+                // TODO
             }
         }
     }

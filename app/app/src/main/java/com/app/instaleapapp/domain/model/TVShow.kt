@@ -1,6 +1,7 @@
 package com.app.instaleapapp.domain.model
 
-import com.app.instaleapapp.data.local.TVShowEntity
+import com.app.instaleapapp.data.local.OnTheAirTVShowEntity
+import com.app.instaleapapp.data.local.PopularTVShowEntity
 import com.app.instaleapapp.data.model.TVShowResponse
 
 data class TVShow(
@@ -9,11 +10,19 @@ data class TVShow(
     val poster: String? = null
 )
 
-fun TVShowResponse.toEntity(): TVShowEntity {
-    return TVShowEntity().apply {
-        id = this@toEntity.id
-        title = this@toEntity.originalName
-        poster = PREFIX_URL + this@toEntity.posterPath
+fun TVShowResponse.toPopularEntity(): PopularTVShowEntity {
+    return PopularTVShowEntity().apply {
+        id = this@toPopularEntity.id
+        title = this@toPopularEntity.originalName
+        poster = PREFIX_URL + this@toPopularEntity.posterPath
+    }
+}
+
+fun TVShowResponse.toOnTheAirEntity(): OnTheAirTVShowEntity {
+    return OnTheAirTVShowEntity().apply {
+        id = this@toOnTheAirEntity.id
+        title = this@toOnTheAirEntity.originalName
+        poster = PREFIX_URL + this@toOnTheAirEntity.posterPath
     }
 }
 

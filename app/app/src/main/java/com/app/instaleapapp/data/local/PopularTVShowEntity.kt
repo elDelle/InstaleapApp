@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import com.app.instaleapapp.domain.model.TVShow
 
 @Entity
-class TVShowEntity {
+class PopularTVShowEntity {
     @PrimaryKey
     var id: Int? = null
 
@@ -15,12 +15,9 @@ class TVShowEntity {
 
     @ColumnInfo("poster")
     var poster: String? = null
-
-    @ColumnInfo("idCategory")
-    var idCategory: Int? = null
 }
 
-fun TVShowEntity.toDomain(): TVShow {
+fun PopularTVShowEntity.toDomain(): TVShow {
     return TVShow(
         this.id,
         this.title,

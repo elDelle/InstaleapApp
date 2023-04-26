@@ -12,7 +12,7 @@ class GetTVShowsUseCase @Inject constructor(private val tvShowsRepository: TVSho
         return tvShowsRepository.getByCategory(idCategory)
     }
 
-    fun getDetails(idTVShow: Int): Flow<TVShowDetails> {
+    fun getDetails(idTVShow: Int): Flow<Result<TVShowDetails>> {
         return tvShowsRepository.getDetails(idTVShow)
     }
 }

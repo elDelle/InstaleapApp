@@ -50,7 +50,7 @@ fun MovieDetails(
                     .padding(10.dp, 10.dp, 10.dp, 0.dp)
             ) {
                 Text(
-                    text = originalTitle.orEmpty(),
+                    text = title.orEmpty(),
                     style = TextStyle(
                         fontFamily = FontFamily.Default,
                         fontWeight = FontWeight.Normal,

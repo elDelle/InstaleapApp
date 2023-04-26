@@ -1,19 +1,19 @@
 package com.app.instaleapapp.data.repository
 
-import com.app.instaleapapp.data.local.TVShowEntity
 import com.app.instaleapapp.data.local.TVShowsDao
 import com.app.instaleapapp.data.local.toDomain
+import com.app.instaleapapp.data.model.TVShowDetailsResponse
+import com.app.instaleapapp.data.model.TVShowResponse
 import com.app.instaleapapp.data.remote.Api
 import com.app.instaleapapp.domain.model.TVShow
 import com.app.instaleapapp.domain.model.TVShowDetails
-import com.app.instaleapapp.domain.model.toDomain
 import com.app.instaleapapp.domain.model.toEntity
+import com.app.instaleapapp.domain.model.toOnTheAirEntity
+import com.app.instaleapapp.domain.model.toPopularEntity
 import com.app.instaleapapp.domain.repository.TVShowsRepository
-import com.app.instaleapapp.resultOf
+import com.app.instaleapapp.presentation.TVShowsViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 class TVShowsRepositoryImpl @Inject constructor(
@@ -21,74 +21,107 @@ class TVShowsRepositoryImpl @Inject constructor(
     private val localSource: TVShowsDao
 ) : TVShowsRepository {
 
-    override fun getByCategory(idCategory: Int): Flow<Result<List<TVShow>>> {
-        return localSource.getTVShowsByCategory(idCategory).map { listTVShowsLocal ->
-            transformLocalTVShowsFromDomain(listTVShowsLocal)
-        }.onEach { listTVShowsLocal ->
-            listTVShowsLocal.map {
-                try {
-                    val tvShowsListFromRemoteToLocal =
-                        transformTVShowsByCategoryFromApiToLocal(idCategory)
-                    val tvShows = it.map { tvShow ->
-                        tvShow.id
-                    }
-                    val tvShowsFromEntity = tvShowsListFromRemoteToLocal.map { tvShowEntity ->
-                        tvShowEntity.id
-                    }
-                    if (tvShows != tvShowsFromEntity) {
-                        saveTVShowsInLocal(tvShowsListFromRemoteToLocal, idCategory)
-                    } else {
-                        //TODO
-                    }
-                } catch (e: java.lang.Exception) {
-                    localSource.getTVShowsByCategory(idCategory)
-                }
-            }
-        }
-    }
-
-    private fun transformLocalTVShowsFromDomain(listTVShowsLocal: List<TVShowEntity>): Result<List<TVShow>> {
-        return resultOf {
-            listTVShowsLocal.map { cached ->
-                cached.toDomain()
-            }
-        }
-    }
-
-    private suspend fun transformTVShowsByCategoryFromApiToLocal(idCategory: Int) =
-        if (idCategory == POPULAR) {
-            remoteSource.getPopularTVShows().results.map {
-                it.toEntity()
+    override fun getByCategory(idCategory: Int): Flow<Result<List<TVShow>>> = flow {
+        val local = getTVShowFromLocal(idCategory)
+        if (local.isSuccess && local.getOrNull().isNullOrEmpty().not()) {
+            emit(local)
+            getTVShowsFromRemote(idCategory).onSuccess { tvShowsListRemote ->
+                updateOrInsertTVShow(tvShowsListRemote, idCategory)
             }
         } else {
-            remoteSource.getOnTheAirTVShows().results.map {
-                it.toEntity()
+            getTVShowsFromRemote(idCategory).onSuccess { tvShowsListRemote ->
+                updateOrInsertTVShow(tvShowsListRemote, idCategory)
+                emit(getTVShowFromLocal(idCategory))
+            }.onFailure {
+                emit(Result.failure(it))
             }
-        }
-
-    private suspend fun saveTVShowsInLocal(tvShowsListRemote: List<TVShowEntity>, idCategory: Int) {
-        localSource.saveTVShows(tvShowsListRemote.map {
-            TVShowEntity().apply {
-                id = it.id
-                title = it.title
-                poster = it.poster
-                this.idCategory = idCategory
-            }
-        })
-    }
-
-    override fun getDetails(idTVShow: Int): Flow<TVShowDetails> {
-        return flow {
-            emit(getDetailApi(idTVShow))
         }
     }
 
-    private suspend fun getDetailApi(idTVShow: Int) =
-        remoteSource.getDetailsTVShow(idTVShow).toDomain()
+    private suspend fun updateOrInsertTVShow(
+        tvShowsListRemote: List<TVShowResponse>,
+        idCategory: Int
+    ) {
+        tvShowsListRemote.map {
+            if (idCategory == POPULAR) {
+                localSource.updateOrInsertPopularTVShow(it.toPopularEntity())
+            } else {
+                localSource.updateOrInsertOnTheAirTVShow(it.toOnTheAirEntity())
+            }
+        }
+    }
+
+    private suspend fun getTVShowsFromRemote(idCategory: Int): Result<List<TVShowResponse>> {
+        return kotlin.runCatching {
+            if (idCategory == POPULAR) {
+                remoteSource.getPopularTVShows().results
+            } else {
+                remoteSource.getOnTheAirTVShows().results
+            }
+        }
+    }
+
+    private suspend fun getTVShowFromLocal(idCategory: Int): Result<List<TVShow>> {
+        return if (idCategory == TVShowsViewModel.POPULAR) {
+            getPopularTVShowFromLocal()
+        } else {
+            getOnTheAirTVShowFromLocal()
+        }
+    }
+
+    private suspend fun getPopularTVShowFromLocal(): Result<List<TVShow>> {
+        return kotlin.runCatching {
+            localSource.getPopularTVShows().map {
+                it.toDomain()
+            }
+        }
+    }
+
+    private suspend fun getOnTheAirTVShowFromLocal(): Result<List<TVShow>> {
+        return kotlin.runCatching {
+            localSource.getOnTheAirTVShows().map {
+                it.toDomain()
+            }
+        }
+    }
+
+    override fun getDetails(idTVShow: Int): Flow<Result<TVShowDetails>> = flow {
+        val local = getTVShowDetailsFromLocal(idTVShow)
+        if (local.isSuccess && local.getOrNull() != null) {
+            emit(local)
+            getTVShowDetailsFromRemote(idTVShow).onSuccess { tvShowDetailsResponse ->
+                updateOrInsertTVShowDetails(tvShowDetailsResponse, idTVShow)
+            }
+        } else {
+            getTVShowDetailsFromRemote(idTVShow).onSuccess { tvShowDetailsResponse ->
+                updateOrInsertTVShowDetails(tvShowDetailsResponse, idTVShow)
+                emit(getTVShowDetailsFromLocal(idTVShow))
+            }.onFailure {
+                emit(Result.failure(it))
+            }
+        }
+    }
+
+    private suspend fun getTVShowDetailsFromLocal(idTVShow: Int): Result<TVShowDetails> {
+        return kotlin.runCatching {
+            localSource.getTVShowDetails(idTVShow).toDomain()
+        }
+    }
+
+    private suspend fun getTVShowDetailsFromRemote(idTVShow: Int): Result<TVShowDetailsResponse> {
+        return kotlin.runCatching {
+            remoteSource.getDetailsTVShow(idTVShow)
+        }
+    }
+
+    private suspend fun updateOrInsertTVShowDetails(
+        tvShowDetailsResponse: TVShowDetailsResponse,
+        idTVShow: Int
+    ) {
+        localSource.updateOrInsertTVShowDetails(tvShowDetailsResponse.toEntity(idTVShow))
+    }
 
     private companion object {
-        const val INTERNET_CONNECTION_ERROR = "Revisa tu conexión a internet"
-        const val OTHER_ERROR = "Ocurrió un error inesperado"
         const val POPULAR = 1
     }
 }

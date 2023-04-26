@@ -1,21 +1,19 @@
 package com.app.instaleapapp.data.repository
 
-import com.app.instaleapapp.data.local.MovieEntity
 import com.app.instaleapapp.data.local.MoviesDao
 import com.app.instaleapapp.data.local.toDomain
+import com.app.instaleapapp.data.model.MovieDetailsResponse
+import com.app.instaleapapp.data.model.MovieResponse
 import com.app.instaleapapp.data.remote.Api
 import com.app.instaleapapp.domain.model.Movie
 import com.app.instaleapapp.domain.model.MovieDetails
-import com.app.instaleapapp.domain.model.toDomain
 import com.app.instaleapapp.domain.model.toEntity
+import com.app.instaleapapp.domain.model.toPopularEntity
+import com.app.instaleapapp.domain.model.toTopRatedEntity
 import com.app.instaleapapp.domain.repository.MoviesRepository
-import com.app.instaleapapp.resultOf
+import com.app.instaleapapp.presentation.MoviesViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
-import java.io.IOException
 import javax.inject.Inject
 
 class MoviesRepositoryImpl @Inject constructor(
@@ -23,80 +21,107 @@ class MoviesRepositoryImpl @Inject constructor(
     private val localSource: MoviesDao
 ) : MoviesRepository {
 
-    override fun getByCategory(idCategory: Int): Flow<Result<List<Movie>>> {
-        return localSource.getMoviesByCategory(idCategory).map { listMoviesLocal ->
-            transformLocalMoviesFromDomain(listMoviesLocal)
-        }.onEach { listMoviesLocal ->
-            listMoviesLocal.map {
-                try {
-                    val moviesListFromRemoteToLocal =
-                        transformMoviesByCategoryFromApiToLocal(idCategory)
-                    val movies = it.map { movie ->
-                        movie.id
-                    }
-                    val moviesFromEntity = moviesListFromRemoteToLocal.map { movieEntity ->
-                        movieEntity.id
-                    }
-                    if (movies != moviesFromEntity) {
-                        saveMoviesInLocal(moviesListFromRemoteToLocal, idCategory)
-                    } else {
-                        //TODO
-                    }
-                } catch (e: java.lang.Exception) {
-                    localSource.getMoviesByCategory(idCategory)
-                }
-            }
-        }.catch {
-            if (it is IOException) {
-                emit(Result.failure(Throwable(INTERNET_CONNECTION_ERROR)))
-            } else {
-                emit(Result.failure(Throwable(OTHER_ERROR)))
-            }
-        }
-    }
-
-    private fun transformLocalMoviesFromDomain(listMoviesLocal: List<MovieEntity>): Result<List<Movie>> {
-        return resultOf {
-            listMoviesLocal.map { cached ->
-                cached.toDomain()
-            }
-        }
-    }
-
-    private suspend fun transformMoviesByCategoryFromApiToLocal(idCategory: Int) =
-        if (idCategory == POPULAR) {
-            remoteSource.getPopularMovies().results.map {
-                it.toEntity()
+    override fun getByCategory(idCategory: Int): Flow<Result<List<Movie>>> = flow {
+        val local = getMoviesFromLocal(idCategory)
+        if (local.isSuccess && local.getOrNull().isNullOrEmpty().not()) {
+            emit(local)
+            getMoviesFromRemote(idCategory).onSuccess { tvShowsListRemote ->
+                updateOrInsertMovie(tvShowsListRemote, idCategory)
             }
         } else {
-            remoteSource.getTopRatedMovies().results.map {
-                it.toEntity()
+            getMoviesFromRemote(idCategory).onSuccess { tvShowsListRemote ->
+                updateOrInsertMovie(tvShowsListRemote, idCategory)
+                emit(getMoviesFromLocal(idCategory))
+            }.onFailure {
+                emit(Result.failure(it))
             }
-        }
-
-    private suspend fun saveMoviesInLocal(moviesListRemote: List<MovieEntity>, idCategory: Int) {
-        localSource.saveMovies(moviesListRemote.map {
-            MovieEntity().apply {
-                id = it.id
-                title = it.title
-                poster = it.poster
-                this.idCategory = idCategory
-            }
-        })
-    }
-
-    override fun getDetails(idMovie: Int): Flow<MovieDetails> {
-        return flow {
-            emit(getDetailApi(idMovie))
         }
     }
 
-    private suspend fun getDetailApi(idMovie: Int) =
-        remoteSource.getDetailsMovie(idMovie).toDomain()
+    private suspend fun getMoviesFromLocal(idCategory: Int): Result<List<Movie>> {
+        return if (idCategory == MoviesViewModel.POPULAR) {
+            getPopularMoviesFromLocal()
+        } else {
+            getTopRatedMoviesFromLocal()
+        }
+    }
+
+    private suspend fun getPopularMoviesFromLocal(): Result<List<Movie>> {
+        return kotlin.runCatching {
+            localSource.getPopularMovies().map {
+                it.toDomain()
+            }
+        }
+    }
+
+    private suspend fun getTopRatedMoviesFromLocal(): Result<List<Movie>> {
+        return kotlin.runCatching {
+            localSource.getTopRatedMovies().map {
+                it.toDomain()
+            }
+        }
+    }
+
+    private suspend fun getMoviesFromRemote(idCategory: Int): Result<List<MovieResponse>> {
+        return kotlin.runCatching {
+            if (idCategory == POPULAR) {
+                remoteSource.getPopularMovies().results
+            } else {
+                remoteSource.getTopRatedMovies().results
+            }
+        }
+    }
+
+    private suspend fun updateOrInsertMovie(
+        moviesListRemote: List<MovieResponse>,
+        idCategory: Int
+    ) {
+        moviesListRemote.map {
+            if (idCategory == POPULAR) {
+                localSource.updateOrInsertPopularMovies(it.toPopularEntity())
+            } else {
+                localSource.updateOrInsertTopRatedMovies(it.toTopRatedEntity())
+            }
+        }
+    }
+
+    override fun getDetails(idMovie: Int): Flow<Result<MovieDetails>> = flow {
+        val local = getMovieDetailsFromLocal(idMovie)
+        if (local.isSuccess && local.getOrNull() != null) {
+            emit(local)
+            getMovieDetailsFromRemote(idMovie).onSuccess { movieDetailsResponse ->
+                updateOrInsertMovieDetails(movieDetailsResponse, idMovie)
+            }
+        } else {
+            getMovieDetailsFromRemote(idMovie).onSuccess { movieDetailsResponse ->
+                updateOrInsertMovieDetails(movieDetailsResponse, idMovie)
+                emit(getMovieDetailsFromLocal(idMovie))
+            }.onFailure {
+                emit(Result.failure(it))
+            }
+        }
+    }
+
+    private suspend fun getMovieDetailsFromLocal(idMovie: Int): Result<MovieDetails> {
+        return kotlin.runCatching {
+            localSource.getMovieDetails(idMovie).toDomain()
+        }
+    }
+
+    private suspend fun getMovieDetailsFromRemote(idMovie: Int): Result<MovieDetailsResponse> {
+        return kotlin.runCatching {
+            remoteSource.getDetailsMovie(idMovie)
+        }
+    }
+
+    private suspend fun updateOrInsertMovieDetails(
+        movieDetailsResponse: MovieDetailsResponse,
+        idTVShow: Int
+    ) {
+        localSource.updateOrInsertMovieDetails(movieDetailsResponse.toEntity(idTVShow))
+    }
 
     private companion object {
-        const val INTERNET_CONNECTION_ERROR = "Revisa tu conexión a internet"
-        const val OTHER_ERROR = "Ocurrió un error inesperado"
         const val POPULAR = 1
     }
 }

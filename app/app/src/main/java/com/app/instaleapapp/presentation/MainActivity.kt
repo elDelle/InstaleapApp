@@ -51,7 +51,7 @@ class MainActivity : ComponentActivity() {
 
     private fun initView() {
         setContent {
-            MainScreen(moviesViewModel, movieDetailsViewModel, tvShowsViewModel)
+            MainScreen(moviesViewModel, movieDetailsViewModel, tvShowsViewModel, tvShowDetailsViewModel)
         }
     }
 

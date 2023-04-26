@@ -1,16 +1,27 @@
 package com.app.instaleapapp.data.local
 
 import androidx.room.Dao
-import androidx.room.Insert
 import androidx.room.Query
-import kotlinx.coroutines.flow.Flow
+import androidx.room.Upsert
 
 @Dao
 interface MoviesDao {
 
-    @Insert
-    suspend fun saveMovies(movies: List<MovieEntity>)
+    @Upsert
+    suspend fun updateOrInsertPopularMovies(popularMovie: PopularMovieEntity)
 
-    @Query(value = "SELECT * FROM MovieEntity WHERE idCategory = :idCategory")
-    fun getMoviesByCategory(idCategory: Int): Flow<List<MovieEntity>>
+    @Query(value = "SELECT * FROM PopularMovieEntity")
+    suspend fun getPopularMovies(): List<PopularMovieEntity>
+
+    @Upsert
+    suspend fun updateOrInsertTopRatedMovies(topRatedMovies: TopRatedMovieEntity)
+
+    @Query(value = "SELECT * FROM TopRatedMovieEntity")
+    suspend fun getTopRatedMovies(): List<TopRatedMovieEntity>
+
+    @Upsert
+    suspend fun updateOrInsertMovieDetails(movieDetails: MovieDetailsEntity)
+
+    @Query(value = "SELECT * FROM MovieDetailsEntity WHERE idMovie = :idMovie")
+    suspend fun getMovieDetails(idMovie: Int): MovieDetailsEntity
 }

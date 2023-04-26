@@ -28,8 +28,12 @@ class TVShowDetailsViewModel @Inject constructor(
         _state.update { it.copy(isProgress = true, isError = false) }
 
         getTVShowUseCase.getDetails(idTVShow).collect() { result ->
-            _state.update {
-                it.copy(response = result, isError = false, isProgress = false)
+            result.onSuccess { tvShowDetails ->
+                _state.update {
+                    it.copy(response = tvShowDetails, isError = false, isProgress = false)
+                }
+            }.onFailure {
+                //TODO
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.app.instaleapapp.domain.model
 
-import com.app.instaleapapp.data.local.MovieEntity
+import com.app.instaleapapp.data.local.PopularMovieEntity
+import com.app.instaleapapp.data.local.TopRatedMovieEntity
 import com.app.instaleapapp.data.model.MovieResponse
 
 data class Movie(
@@ -9,11 +10,19 @@ data class Movie(
     val poster: String? = null
 )
 
-fun MovieResponse.toEntity(): MovieEntity {
-    return MovieEntity().apply {
-        id = this@toEntity.id
-        title = this@toEntity.title
-        poster = PREFIX_URL + this@toEntity.posterPath
+fun MovieResponse.toPopularEntity(): PopularMovieEntity {
+    return PopularMovieEntity().apply {
+        id = this@toPopularEntity.id
+        title = this@toPopularEntity.title
+        poster = PREFIX_URL + this@toPopularEntity.posterPath
+    }
+}
+
+fun MovieResponse.toTopRatedEntity(): TopRatedMovieEntity {
+    return TopRatedMovieEntity().apply {
+        id = this@toTopRatedEntity.id
+        title = this@toTopRatedEntity.title
+        poster = PREFIX_URL + this@toTopRatedEntity.posterPath
     }
 }
 
