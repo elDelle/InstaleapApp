@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.app.instaleapapp.R
 import com.app.instaleapapp.domain.model.TVShow
-import com.app.instaleapapp.presentation.TVShowsViewModel
+import com.app.instaleapapp.presentation.viewmodel.TVShowsViewModel
 import com.app.instaleapapp.presentation.utils.NetworkImage
 
 @Composable

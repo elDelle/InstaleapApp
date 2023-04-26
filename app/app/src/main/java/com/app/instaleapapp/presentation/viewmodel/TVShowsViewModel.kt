@@ -1,9 +1,9 @@
-package com.app.instaleapapp.presentation
+package com.app.instaleapapp.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.app.instaleapapp.domain.model.MovieDetails
-import com.app.instaleapapp.domain.usecases.GetMoviesUseCase
+import com.app.instaleapapp.domain.model.TVShow
+import com.app.instaleapapp.domain.usecases.GetTVShowsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,24 +13,24 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MovieDetailsViewModel @Inject constructor(
-    private val getMoviesUseCase: GetMoviesUseCase
+class TVShowsViewModel @Inject constructor(
+    private val getTVShowsUseCase: GetTVShowsUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(State())
     val state: StateFlow<State> = _state.asStateFlow()
 
-    fun loadMovieDetails(idMovie: Int) {
-        getMovieDetails(idMovie)
+    fun loadTVShows(categoryTVShow: Int) {
+        getTVShows(categoryTVShow)
     }
 
-    private fun getMovieDetails(idMovie: Int) = viewModelScope.launch {
+    private fun getTVShows(idCategory: Int) = viewModelScope.launch {
         _state.update { it.copy(isProgress = true, isError = false) }
 
-        getMoviesUseCase.getDetails(idMovie).collect() { result ->
-            result.onSuccess { movieDetails ->
+        getTVShowsUseCase.getByCategory(idCategory).collect { result ->
+            result.onSuccess { tvShowsList ->
                 _state.update {
-                    it.copy(response = movieDetails, isError = false, isProgress = false)
+                    it.copy(response = tvShowsList, isError = false, isProgress = false)
                 }
             }.onFailure {
                 _state.update {
@@ -41,8 +41,13 @@ class MovieDetailsViewModel @Inject constructor(
     }
 
     data class State(
-        val response: MovieDetails = MovieDetails(),
+        val response: List<TVShow> = listOf(),
         val isError: Boolean = false,
         val isProgress: Boolean = false,
     )
+
+    companion object {
+        const val POPULAR = 1
+        const val ON_THE_AIR = 2
+    }
 }

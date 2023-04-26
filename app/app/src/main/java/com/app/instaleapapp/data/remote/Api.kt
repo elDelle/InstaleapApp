@@ -1,9 +1,9 @@
 package com.app.instaleapapp.data.remote
 
-import com.app.instaleapapp.data.model.MovieDetailsResponse
-import com.app.instaleapapp.data.model.MoviesResponse
-import com.app.instaleapapp.data.model.TVShowDetailsResponse
-import com.app.instaleapapp.data.model.TVShowsResponse
+import com.app.instaleapapp.data.remote.model.MovieDetailsResponse
+import com.app.instaleapapp.data.remote.model.MoviesResponse
+import com.app.instaleapapp.data.remote.model.TVShowDetailsResponse
+import com.app.instaleapapp.data.remote.model.TVShowsResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 

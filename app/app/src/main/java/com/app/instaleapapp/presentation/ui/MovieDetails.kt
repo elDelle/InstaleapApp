@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.app.instaleapapp.R
 import com.app.instaleapapp.domain.model.MovieDetails
-import com.app.instaleapapp.presentation.MovieDetailsViewModel
+import com.app.instaleapapp.presentation.viewmodel.MovieDetailsViewModel
 import com.app.instaleapapp.presentation.utils.NetworkImage
 
 @Composable

@@ -1,7 +1,7 @@
 package com.app.instaleapapp.domain.model
 
-import com.app.instaleapapp.data.local.TVShowDetailsEntity
-import com.app.instaleapapp.data.model.TVShowDetailsResponse
+import com.app.instaleapapp.data.local.models.TVShowDetailsEntity
+import com.app.instaleapapp.data.remote.model.TVShowDetailsResponse
 
 data class TVShowDetails(
     val id: Int? = null,

@@ -1,12 +1,12 @@
-package com.app.instaleapapp.data.model
+package com.app.instaleapapp.data.remote.model
 
 import com.google.gson.annotations.SerializedName
 
 data class TVShowsResponse(
-	val page: Int,
-	val totalPages: Int,
-	val results: List<TVShowResponse>,
-	val totalResults: Int
+    val page: Int,
+    val totalPages: Int,
+    val results: List<TVShowResponse>,
+    val totalResults: Int
 )
 
 data class TVShowResponse(

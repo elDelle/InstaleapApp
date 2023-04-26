@@ -1,9 +1,8 @@
 package com.app.instaleapapp.data.repository
 
-import com.app.instaleapapp.data.local.TVShowsDao
-import com.app.instaleapapp.data.local.toDomain
-import com.app.instaleapapp.data.model.TVShowDetailsResponse
-import com.app.instaleapapp.data.model.TVShowResponse
+import com.app.instaleapapp.data.local.dao.TVShowsDao
+import com.app.instaleapapp.data.remote.model.TVShowDetailsResponse
+import com.app.instaleapapp.data.remote.model.TVShowResponse
 import com.app.instaleapapp.data.remote.Api
 import com.app.instaleapapp.domain.model.TVShow
 import com.app.instaleapapp.domain.model.TVShowDetails
@@ -11,7 +10,7 @@ import com.app.instaleapapp.domain.model.toEntity
 import com.app.instaleapapp.domain.model.toOnTheAirEntity
 import com.app.instaleapapp.domain.model.toPopularEntity
 import com.app.instaleapapp.domain.repository.TVShowsRepository
-import com.app.instaleapapp.presentation.TVShowsViewModel
+import com.app.instaleapapp.presentation.viewmodel.TVShowsViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -27,6 +26,8 @@ class TVShowsRepositoryImpl @Inject constructor(
             emit(local)
             getTVShowsFromRemote(idCategory).onSuccess { tvShowsListRemote ->
                 updateOrInsertTVShow(tvShowsListRemote, idCategory)
+            }.onFailure {
+                //TODO
             }
         } else {
             getTVShowsFromRemote(idCategory).onSuccess { tvShowsListRemote ->
@@ -91,6 +92,8 @@ class TVShowsRepositoryImpl @Inject constructor(
             emit(local)
             getTVShowDetailsFromRemote(idTVShow).onSuccess { tvShowDetailsResponse ->
                 updateOrInsertTVShowDetails(tvShowDetailsResponse, idTVShow)
+            }.onFailure {
+                //TODO
             }
         } else {
             getTVShowDetailsFromRemote(idTVShow).onSuccess { tvShowDetailsResponse ->

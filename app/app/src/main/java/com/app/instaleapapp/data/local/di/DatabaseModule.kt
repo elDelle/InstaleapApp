@@ -3,8 +3,8 @@ package com.app.instaleapapp.data.local.di
 import android.content.Context
 import androidx.room.Room
 import com.app.instaleapapp.data.local.Database
-import com.app.instaleapapp.data.local.MoviesDao
-import com.app.instaleapapp.data.local.TVShowsDao
+import com.app.instaleapapp.data.local.dao.MoviesDao
+import com.app.instaleapapp.data.local.dao.TVShowsDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

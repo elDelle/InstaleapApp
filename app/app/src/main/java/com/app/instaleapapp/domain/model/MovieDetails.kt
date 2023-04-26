@@ -1,7 +1,7 @@
 package com.app.instaleapapp.domain.model
 
-import com.app.instaleapapp.data.local.MovieDetailsEntity
-import com.app.instaleapapp.data.model.MovieDetailsResponse
+import com.app.instaleapapp.data.local.models.MovieDetailsEntity
+import com.app.instaleapapp.data.remote.model.MovieDetailsResponse
 
 data class MovieDetails(
     val id: Int? = null,

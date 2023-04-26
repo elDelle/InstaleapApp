@@ -1,8 +1,11 @@
-package com.app.instaleapapp.data.local
+package com.app.instaleapapp.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
+import com.app.instaleapapp.data.local.models.MovieDetailsEntity
+import com.app.instaleapapp.data.local.models.PopularMovieEntity
+import com.app.instaleapapp.data.local.models.TopRatedMovieEntity
 
 @Dao
 interface MoviesDao {

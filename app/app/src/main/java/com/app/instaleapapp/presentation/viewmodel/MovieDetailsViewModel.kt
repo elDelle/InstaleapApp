@@ -1,9 +1,9 @@
-package com.app.instaleapapp.presentation
+package com.app.instaleapapp.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.app.instaleapapp.domain.model.TVShowDetails
-import com.app.instaleapapp.domain.usecases.GetTVShowsUseCase
+import com.app.instaleapapp.domain.model.MovieDetails
+import com.app.instaleapapp.domain.usecases.GetMoviesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,33 +13,35 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TVShowDetailsViewModel @Inject constructor(
-    private val getTVShowUseCase: GetTVShowsUseCase
+class MovieDetailsViewModel @Inject constructor(
+    private val getMoviesUseCase: GetMoviesUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(State())
     val state: StateFlow<State> = _state.asStateFlow()
 
-    fun loadTVShowDetails(idTVShow: Int) {
-        getTVShowDetails(idTVShow)
+    fun loadMovieDetails(idMovie: Int) {
+        getMovieDetails(idMovie)
     }
 
-    private fun getTVShowDetails(idTVShow: Int) = viewModelScope.launch {
+    private fun getMovieDetails(idMovie: Int) = viewModelScope.launch {
         _state.update { it.copy(isProgress = true, isError = false) }
 
-        getTVShowUseCase.getDetails(idTVShow).collect() { result ->
-            result.onSuccess { tvShowDetails ->
+        getMoviesUseCase.getDetails(idMovie).collect { result ->
+            result.onSuccess { movieDetails ->
                 _state.update {
-                    it.copy(response = tvShowDetails, isError = false, isProgress = false)
+                    it.copy(response = movieDetails, isError = false, isProgress = false)
                 }
             }.onFailure {
-                //TODO
+                _state.update {
+                    it.copy(isError = true, isProgress = false)
+                }
             }
         }
     }
 
     data class State(
-        val response: TVShowDetails = TVShowDetails(),
+        val response: MovieDetails = MovieDetails(),
         val isError: Boolean = false,
         val isProgress: Boolean = false,
     )

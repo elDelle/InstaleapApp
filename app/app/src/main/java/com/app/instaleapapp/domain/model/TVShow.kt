@@ -1,8 +1,8 @@
 package com.app.instaleapapp.domain.model
 
-import com.app.instaleapapp.data.local.OnTheAirTVShowEntity
-import com.app.instaleapapp.data.local.PopularTVShowEntity
-import com.app.instaleapapp.data.model.TVShowResponse
+import com.app.instaleapapp.data.local.models.OnTheAirTVShowEntity
+import com.app.instaleapapp.data.local.models.PopularTVShowEntity
+import com.app.instaleapapp.data.remote.model.TVShowResponse
 
 data class TVShow(
     val id: Int? = null,

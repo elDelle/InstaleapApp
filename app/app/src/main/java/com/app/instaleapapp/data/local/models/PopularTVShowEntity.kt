@@ -1,12 +1,12 @@
-package com.app.instaleapapp.data.local
+package com.app.instaleapapp.data.local.models
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.app.instaleapapp.domain.model.Movie
+import com.app.instaleapapp.domain.model.TVShow
 
 @Entity
-class PopularMovieEntity {
+class PopularTVShowEntity {
     @PrimaryKey
     var id: Int? = null
 
@@ -17,8 +17,8 @@ class PopularMovieEntity {
     var poster: String? = null
 }
 
-fun PopularMovieEntity.toDomain(): Movie {
-    return Movie(
+fun PopularTVShowEntity.toDomain(): TVShow {
+    return TVShow(
         this.id,
         this.title,
         this.poster

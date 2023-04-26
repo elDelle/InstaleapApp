@@ -1,4 +1,4 @@
-package com.app.instaleapapp.data.model
+package com.app.instaleapapp.data.remote.model
 
 import com.google.gson.annotations.SerializedName
 

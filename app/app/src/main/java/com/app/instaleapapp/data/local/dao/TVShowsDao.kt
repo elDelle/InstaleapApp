@@ -1,4 +1,4 @@
-package com.app.instaleapapp.data.local
+package com.app.instaleapapp.data.local.dao
 
 import androidx.room.Dao
 import androidx.room.Query

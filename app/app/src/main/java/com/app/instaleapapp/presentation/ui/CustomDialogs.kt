@@ -14,8 +14,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.app.instaleapapp.R
-import com.app.instaleapapp.presentation.MoviesViewModel
-import com.app.instaleapapp.presentation.TVShowsViewModel
+import com.app.instaleapapp.presentation.viewmodel.MoviesViewModel
+import com.app.instaleapapp.presentation.viewmodel.TVShowsViewModel
 
 @Composable
 fun CustomMovieDialog(

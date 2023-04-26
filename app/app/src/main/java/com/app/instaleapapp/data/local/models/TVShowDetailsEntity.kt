@@ -1,4 +1,4 @@
-package com.app.instaleapapp.data.local
+package com.app.instaleapapp.data.local.models
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

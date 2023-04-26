@@ -1,17 +1,16 @@
 package com.app.instaleapapp.data.repository
 
-import com.app.instaleapapp.data.local.MoviesDao
-import com.app.instaleapapp.data.local.toDomain
-import com.app.instaleapapp.data.model.MovieDetailsResponse
-import com.app.instaleapapp.data.model.MovieResponse
+import com.app.instaleapapp.data.local.dao.MoviesDao
+import com.app.instaleapapp.data.local.models.toDomain
 import com.app.instaleapapp.data.remote.Api
+import com.app.instaleapapp.data.remote.model.MovieDetailsResponse
+import com.app.instaleapapp.data.remote.model.MovieResponse
 import com.app.instaleapapp.domain.model.Movie
 import com.app.instaleapapp.domain.model.MovieDetails
 import com.app.instaleapapp.domain.model.toEntity
 import com.app.instaleapapp.domain.model.toPopularEntity
 import com.app.instaleapapp.domain.model.toTopRatedEntity
 import com.app.instaleapapp.domain.repository.MoviesRepository
-import com.app.instaleapapp.presentation.MoviesViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -27,6 +26,8 @@ class MoviesRepositoryImpl @Inject constructor(
             emit(local)
             getMoviesFromRemote(idCategory).onSuccess { tvShowsListRemote ->
                 updateOrInsertMovie(tvShowsListRemote, idCategory)
+            }.onFailure {
+                //TODO
             }
         } else {
             getMoviesFromRemote(idCategory).onSuccess { tvShowsListRemote ->
@@ -39,7 +40,7 @@ class MoviesRepositoryImpl @Inject constructor(
     }
 
     private suspend fun getMoviesFromLocal(idCategory: Int): Result<List<Movie>> {
-        return if (idCategory == MoviesViewModel.POPULAR) {
+        return if (idCategory == POPULAR) {
             getPopularMoviesFromLocal()
         } else {
             getTopRatedMoviesFromLocal()
@@ -91,6 +92,8 @@ class MoviesRepositoryImpl @Inject constructor(
             emit(local)
             getMovieDetailsFromRemote(idMovie).onSuccess { movieDetailsResponse ->
                 updateOrInsertMovieDetails(movieDetailsResponse, idMovie)
+            }.onFailure {
+                //TODO
             }
         } else {
             getMovieDetailsFromRemote(idMovie).onSuccess { movieDetailsResponse ->

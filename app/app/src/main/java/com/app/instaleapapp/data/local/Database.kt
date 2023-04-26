@@ -2,6 +2,8 @@ package com.app.instaleapapp.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.app.instaleapapp.data.local.dao.MoviesDao
+import com.app.instaleapapp.data.local.dao.TVShowsDao
 
 private const val DATABASE_VERSION = 1
 

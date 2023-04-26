@@ -1,4 +1,4 @@
-package com.app.instaleapapp.presentation
+package com.app.instaleapapp.presentation.view
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -27,13 +27,17 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.app.instaleapapp.R
-import com.app.instaleapapp.presentation.MoviesViewModel.Companion.POPULAR
+import com.app.instaleapapp.presentation.viewmodel.MoviesViewModel.Companion.POPULAR
 import com.app.instaleapapp.presentation.ui.MovieDetails
 import com.app.instaleapapp.presentation.ui.MoviesScreen
 import com.app.instaleapapp.presentation.ui.TVShowDetails
 import com.app.instaleapapp.presentation.ui.TVShowsScreen
 import com.app.instaleapapp.presentation.ui.ToolbarMovieOption
 import com.app.instaleapapp.presentation.ui.ToolbarTVShowOption
+import com.app.instaleapapp.presentation.viewmodel.MovieDetailsViewModel
+import com.app.instaleapapp.presentation.viewmodel.MoviesViewModel
+import com.app.instaleapapp.presentation.viewmodel.TVShowDetailsViewModel
+import com.app.instaleapapp.presentation.viewmodel.TVShowsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -51,7 +55,12 @@ class MainActivity : ComponentActivity() {
 
     private fun initView() {
         setContent {
-            MainScreen(moviesViewModel, movieDetailsViewModel, tvShowsViewModel, tvShowDetailsViewModel)
+            MainScreen(
+                moviesViewModel,
+                movieDetailsViewModel,
+                tvShowsViewModel,
+                tvShowDetailsViewModel
+            )
         }
     }
 
@@ -127,6 +136,7 @@ fun ContentView(
     isMoviesListVisible: MutableState<Boolean>
 ) {
     val navController = rememberNavController()
+
     NavHost(navController = navController, startDestination = NavScreen.Home.route) {
         composable(NavScreen.Home.route) {
             if (isMoviesListVisible.value) {

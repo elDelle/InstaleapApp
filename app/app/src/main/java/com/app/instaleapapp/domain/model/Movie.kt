@@ -1,8 +1,8 @@
 package com.app.instaleapapp.domain.model
 
-import com.app.instaleapapp.data.local.PopularMovieEntity
-import com.app.instaleapapp.data.local.TopRatedMovieEntity
-import com.app.instaleapapp.data.model.MovieResponse
+import com.app.instaleapapp.data.local.models.PopularMovieEntity
+import com.app.instaleapapp.data.local.models.TopRatedMovieEntity
+import com.app.instaleapapp.data.remote.model.MovieResponse
 
 data class Movie(
     val id: Int? = null,
