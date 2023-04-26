@@ -9,13 +9,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.Card
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.app.instaleapapp.R
 import com.app.instaleapapp.domain.model.Movie
 import com.app.instaleapapp.presentation.MoviesViewModel
 import com.app.instaleapapp.presentation.utils.NetworkImage
@@ -26,7 +30,11 @@ fun MoviesScreen(
     selectMovie: (Int) -> Unit
 ) {
     val uiMoviesState by moviesViewModel.state.collectAsState()
-    MoviesList(uiMoviesState.response, selectMovie)
+    when {
+        uiMoviesState.isProgress -> CircularProgressIndicator()
+        uiMoviesState.isError -> ShowError()
+        else -> MoviesList(uiMoviesState.response, selectMovie)
+    }
 }
 
 @Composable
@@ -66,5 +74,18 @@ fun MovieItem(
                 circularRevealEnabled = true
             )
         }
+    }
+}
+
+@Composable
+private fun ShowError() {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = LocalContext.current.getString(R.string.error)
+        )
     }
 }

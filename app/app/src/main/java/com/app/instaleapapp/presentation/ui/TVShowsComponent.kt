@@ -9,13 +9,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.Card
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.app.instaleapapp.R
 import com.app.instaleapapp.domain.model.TVShow
 import com.app.instaleapapp.presentation.TVShowsViewModel
 import com.app.instaleapapp.presentation.utils.NetworkImage
@@ -25,7 +29,11 @@ fun TVShowsScreen(
     tvShowsViewModel: TVShowsViewModel = viewModel(), selectTVShow: (Int) -> Unit
 ) {
     val uiState by tvShowsViewModel.state.collectAsState()
-    TVShowsList(uiState.response, selectTVShow)
+    when {
+        uiState.isProgress -> CircularProgressIndicator()
+        uiState.isError -> ShowError()
+        else -> TVShowsList(uiState.response, selectTVShow)
+    }
 }
 
 @Composable
@@ -58,5 +66,18 @@ fun TVShowItem(tvShow: TVShow, selectTVShow: (Int) -> Unit = {}) {
                 circularRevealEnabled = true
             )
         }
+    }
+}
+
+@Composable
+private fun ShowError() {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = LocalContext.current.getString(R.string.error)
+        )
     }
 }

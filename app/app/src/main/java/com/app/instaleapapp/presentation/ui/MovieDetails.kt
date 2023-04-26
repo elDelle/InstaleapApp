@@ -8,17 +8,21 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.app.instaleapapp.R
+import com.app.instaleapapp.domain.model.MovieDetails
 import com.app.instaleapapp.presentation.MovieDetailsViewModel
 import com.app.instaleapapp.presentation.utils.NetworkImage
 
@@ -37,41 +41,63 @@ fun MovieDetails(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        movieDetails.apply {
-            NetworkImage(
-                modifier = Modifier
-                    .aspectRatio(0.8f),
-                url = poster.orEmpty(),
-                circularRevealEnabled = true
-            )
-            Box(
-                Modifier
-                    .fillMaxSize()
-                    .padding(10.dp, 10.dp, 10.dp, 0.dp)
-            ) {
-                Text(
-                    text = title.orEmpty(),
-                    style = TextStyle(
-                        fontFamily = FontFamily.Default,
-                        fontWeight = FontWeight.Normal,
-                        fontSize = 18.sp
-                    )
-                )
-            }
-            Box(
-                Modifier
-                    .fillMaxSize()
-                    .padding(10.dp, 16.dp, 10.dp, 20.dp)
-            ) {
-                Text(
-                    text = overview.orEmpty(),
-                    style = TextStyle(
-                        fontFamily = FontFamily.Default,
-                        fontWeight = FontWeight.Normal,
-                        fontSize = 14.sp
-                    )
-                )
-            }
+        when {
+            uiMovieDetailState.isProgress -> CircularProgressIndicator()
+            uiMovieDetailState.isError -> ShowError()
+            else -> ShowMovieDetail(movieDetails)
         }
+    }
+}
+
+@Composable
+private fun ShowMovieDetail(movieDetails: MovieDetails) {
+    movieDetails.apply {
+        NetworkImage(
+            modifier = Modifier
+                .aspectRatio(0.8f),
+            url = poster.orEmpty(),
+            circularRevealEnabled = true
+        )
+        Box(
+            Modifier
+                .fillMaxSize()
+                .padding(10.dp, 10.dp, 10.dp, 0.dp)
+        ) {
+            Text(
+                text = title.orEmpty(),
+                style = TextStyle(
+                    fontFamily = FontFamily.Default,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 18.sp
+                )
+            )
+        }
+        Box(
+            Modifier
+                .fillMaxSize()
+                .padding(10.dp, 16.dp, 10.dp, 20.dp)
+        ) {
+            Text(
+                text = overview.orEmpty(),
+                style = TextStyle(
+                    fontFamily = FontFamily.Default,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 14.sp
+                )
+            )
+        }
+    }
+}
+
+@Composable
+private fun ShowError() {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = LocalContext.current.getString(R.string.error)
+        )
     }
 }
