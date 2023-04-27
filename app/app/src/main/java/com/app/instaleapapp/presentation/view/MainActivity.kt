@@ -7,17 +7,15 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -26,12 +24,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.app.instaleapapp.Constants.MOVIES
+import com.app.instaleapapp.Constants.POPULAR_MOVIES
 import com.app.instaleapapp.R
-import com.app.instaleapapp.presentation.viewmodel.MoviesViewModel.Companion.POPULAR
 import com.app.instaleapapp.presentation.ui.MovieDetails
-import com.app.instaleapapp.presentation.ui.MoviesScreen
+import com.app.instaleapapp.presentation.ui.StreamingScreen
 import com.app.instaleapapp.presentation.ui.TVShowDetails
-import com.app.instaleapapp.presentation.ui.TVShowsScreen
 import com.app.instaleapapp.presentation.ui.ToolbarMovieOption
 import com.app.instaleapapp.presentation.ui.ToolbarTVShowOption
 import com.app.instaleapapp.presentation.viewmodel.MovieDetailsViewModel
@@ -65,7 +63,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun initData() {
-        moviesViewModel.loadMovies(POPULAR)
+        moviesViewModel.loadMovies(POPULAR_MOVIES)
     }
 }
 
@@ -77,18 +75,14 @@ fun MainScreen(
     tvShowsViewModel: TVShowsViewModel = viewModel(),
     tvShowDetailsViewModel: TVShowDetailsViewModel = viewModel()
 ) {
-    val isMoviesListVisible = remember { mutableStateOf(true) }
 
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Toolbar(moviesViewModel, tvShowsViewModel, isMoviesListVisible)
-        ContentView(
-            moviesViewModel,
-            moviesDetailsViewModel,
-            tvShowsViewModel,
-            tvShowDetailsViewModel,
-            isMoviesListVisible
-        )
-    }
+    StreamingScreen(moviesViewModel, tvShowsViewModel)
+    ContentView(
+        moviesViewModel,
+        moviesDetailsViewModel,
+        tvShowsViewModel,
+        tvShowDetailsViewModel
+    )
 }
 
 @Composable
@@ -109,7 +103,7 @@ fun Toolbar(
             modifier = Modifier.padding(5.dp, 3.dp, 0.dp, 3.dp)
         )
         ToolbarMovieOption(
-            "Movies", Modifier
+            LocalContext.current.getString(R.string.movies), Modifier
                 .weight(1f)
                 .padding(20.dp, 16.dp, 0.dp, 0.dp)
         ) {
@@ -117,7 +111,7 @@ fun Toolbar(
             isMoviesListVisible.value = true
         }
         ToolbarTVShowOption(
-            "TV Shows", Modifier
+            LocalContext.current.getString(R.string.tv_shows), Modifier
                 .weight(1f)
                 .padding(20.dp, 16.dp, 0.dp, 0.dp)
         ) {
@@ -132,42 +126,39 @@ fun ContentView(
     moviesViewModel: MoviesViewModel,
     movieDetailsViewModel: MovieDetailsViewModel,
     tvShowsViewModel: TVShowsViewModel,
-    tvShowDetailsViewModel: TVShowDetailsViewModel,
-    isMoviesListVisible: MutableState<Boolean>
+    tvShowDetailsViewModel: TVShowDetailsViewModel
 ) {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = NavScreen.Home.route) {
         composable(NavScreen.Home.route) {
-            if (isMoviesListVisible.value) {
-                MoviesScreen(moviesViewModel) {
-                    navController.navigate("${NavScreen.MovieDetails.route}/$it")
-                }
-            } else {
-                TVShowsScreen(tvShowsViewModel) {
-                    navController.navigate("${NavScreen.TVShowDetails.route}/$it")
+            StreamingScreen(moviesViewModel, tvShowsViewModel) { idSelected, typeStream ->
+                if (typeStream == MOVIES) {
+                    navController.navigate("${NavScreen.MovieDetails.route}/$idSelected")
+                } else {
+                    navController.navigate("${NavScreen.TVShowDetails.route}/$idSelected")
                 }
             }
         }
         composable(
             route = NavScreen.MovieDetails.routeWithArgument,
             arguments = listOf(
-                navArgument(NavScreen.MovieDetails.argument0) { type = NavType.LongType }
+                navArgument(NavScreen.MovieDetails.movieId) { type = NavType.LongType }
             )
         ) { backStackEntry ->
             val idMovie =
-                backStackEntry.arguments?.getLong(NavScreen.MovieDetails.argument0)
+                backStackEntry.arguments?.getLong(NavScreen.MovieDetails.movieId)
                     ?: return@composable
             MovieDetails(idMovie.toInt(), movieDetailsViewModel)
         }
         composable(
             route = NavScreen.TVShowDetails.routeWithArgument,
             arguments = listOf(
-                navArgument(NavScreen.TVShowDetails.argument0) { type = NavType.LongType }
+                navArgument(NavScreen.TVShowDetails.tvShowId) { type = NavType.LongType }
             )
         ) { backStackEntry ->
             val idTVShow =
-                backStackEntry.arguments?.getLong(NavScreen.TVShowDetails.argument0)
+                backStackEntry.arguments?.getLong(NavScreen.TVShowDetails.tvShowId)
                     ?: return@composable
             TVShowDetails(idTVShow.toInt(), tvShowDetailsViewModel)
         }
@@ -182,13 +173,13 @@ sealed class NavScreen(val route: String) {
 
         const val routeWithArgument: String = "MovieDetails/{movieId}"
 
-        const val argument0: String = "movieId"
+        const val movieId: String = "movieId"
     }
 
     object TVShowDetails : NavScreen("TVShowDetails") {
 
         const val routeWithArgument: String = "TVShowDetails/{tvShowId}"
 
-        const val argument0: String = "tvShowId"
+        const val tvShowId: String = "tvShowId"
     }
 }

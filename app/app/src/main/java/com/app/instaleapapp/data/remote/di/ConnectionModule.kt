@@ -1,5 +1,8 @@
 package com.app.instaleapapp.data.remote.di
 
+import com.app.instaleapapp.BuildConfig.API_KEY
+import com.app.instaleapapp.BuildConfig.API_KEY_CONST
+import com.app.instaleapapp.BuildConfig.BASE_URL
 import com.app.instaleapapp.data.remote.Api
 import dagger.Module
 import dagger.Provides
@@ -12,13 +15,9 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
-
 @Module
 @InstallIn(SingletonComponent::class)
 object ConnectionModule {
-
-    private const val BaseUrl = "https://api.themoviedb.org/3/"
-    private const val API_KEY = "b8dedba82d016993814df93a83f93631"
 
     @Provides
     @Singleton
@@ -28,7 +27,7 @@ object ConnectionModule {
             val request = chain.request().newBuilder()
             val originalHttpUrl = chain.request().url
             val url =
-                originalHttpUrl.newBuilder().addQueryParameter("api_key", API_KEY)
+                originalHttpUrl.newBuilder().addQueryParameter(API_KEY_CONST, API_KEY)
                     .build()
             request.url(url)
             return@addInterceptor chain.proceed(request.build())
@@ -40,7 +39,7 @@ object ConnectionModule {
     @Singleton
     fun provideRetrofitClient(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(BaseUrl)
+            .baseUrl(BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

@@ -1,5 +1,6 @@
 package com.app.instaleapapp.domain.model
 
+import com.app.instaleapapp.Constants.PREFIX_URL
 import com.app.instaleapapp.data.local.models.PopularMovieEntity
 import com.app.instaleapapp.data.local.models.TopRatedMovieEntity
 import com.app.instaleapapp.data.remote.model.MovieResponse
@@ -25,5 +26,3 @@ fun MovieResponse.toTopRatedEntity(): TopRatedMovieEntity {
         poster = PREFIX_URL + this@toTopRatedEntity.posterPath
     }
 }
-
-private const val PREFIX_URL = "https://image.tmdb.org/t/p/w500"

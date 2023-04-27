@@ -45,9 +45,4 @@ class TVShowsViewModel @Inject constructor(
         val isError: Boolean = false,
         val isProgress: Boolean = false,
     )
-
-    companion object {
-        const val POPULAR = 1
-        const val ON_THE_AIR = 2
-    }
 }

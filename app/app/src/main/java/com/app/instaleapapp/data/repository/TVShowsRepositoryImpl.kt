@@ -1,5 +1,6 @@
 package com.app.instaleapapp.data.repository
 
+import com.app.instaleapapp.Constants.POPULAR_TV_SHOWS
 import com.app.instaleapapp.data.local.dao.TVShowsDao
 import com.app.instaleapapp.data.local.models.toDomain
 import com.app.instaleapapp.data.remote.Api
@@ -45,7 +46,7 @@ class TVShowsRepositoryImpl @Inject constructor(
         idCategory: Int
     ) {
         tvShowsListRemote.map {
-            if (idCategory == POPULAR) {
+            if (idCategory == POPULAR_TV_SHOWS) {
                 localSource.updateOrInsertPopularTVShow(it.toPopularEntity())
             } else {
                 localSource.updateOrInsertOnTheAirTVShow(it.toOnTheAirEntity())
@@ -55,7 +56,7 @@ class TVShowsRepositoryImpl @Inject constructor(
 
     private suspend fun getTVShowsFromRemote(idCategory: Int): Result<List<TVShowResponse>> {
         return kotlin.runCatching {
-            if (idCategory == POPULAR) {
+            if (idCategory == POPULAR_TV_SHOWS) {
                 remoteSource.getPopularTVShows().results
             } else {
                 remoteSource.getOnTheAirTVShows().results
@@ -64,7 +65,7 @@ class TVShowsRepositoryImpl @Inject constructor(
     }
 
     private suspend fun getTVShowFromLocal(idCategory: Int): Result<List<TVShow>> {
-        return if (idCategory == TVShowsViewModel.POPULAR) {
+        return if (idCategory == POPULAR_TV_SHOWS) {
             getPopularTVShowFromLocal()
         } else {
             getOnTheAirTVShowFromLocal()
@@ -123,9 +124,5 @@ class TVShowsRepositoryImpl @Inject constructor(
         idTVShow: Int
     ) {
         localSource.updateOrInsertTVShowDetails(tvShowDetailsResponse.toEntity(idTVShow))
-    }
-
-    private companion object {
-        const val POPULAR = 1
     }
 }

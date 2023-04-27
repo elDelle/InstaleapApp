@@ -1,5 +1,6 @@
 package com.app.instaleapapp.data.repository
 
+import com.app.instaleapapp.Constants.POPULAR_MOVIES
 import com.app.instaleapapp.data.local.dao.MoviesDao
 import com.app.instaleapapp.data.local.models.toDomain
 import com.app.instaleapapp.data.remote.Api
@@ -40,7 +41,7 @@ class MoviesRepositoryImpl @Inject constructor(
     }
 
     private suspend fun getMoviesFromLocal(idCategory: Int): Result<List<Movie>> {
-        return if (idCategory == POPULAR) {
+        return if (idCategory == POPULAR_MOVIES) {
             getPopularMoviesFromLocal()
         } else {
             getTopRatedMoviesFromLocal()
@@ -65,7 +66,7 @@ class MoviesRepositoryImpl @Inject constructor(
 
     private suspend fun getMoviesFromRemote(idCategory: Int): Result<List<MovieResponse>> {
         return kotlin.runCatching {
-            if (idCategory == POPULAR) {
+            if (idCategory == POPULAR_MOVIES) {
                 remoteSource.getPopularMovies().results
             } else {
                 remoteSource.getTopRatedMovies().results
@@ -78,7 +79,7 @@ class MoviesRepositoryImpl @Inject constructor(
         idCategory: Int
     ) {
         moviesListRemote.map {
-            if (idCategory == POPULAR) {
+            if (idCategory == POPULAR_MOVIES) {
                 localSource.updateOrInsertPopularMovies(it.toPopularEntity())
             } else {
                 localSource.updateOrInsertTopRatedMovies(it.toTopRatedEntity())
@@ -122,9 +123,5 @@ class MoviesRepositoryImpl @Inject constructor(
         idTVShow: Int
     ) {
         localSource.updateOrInsertMovieDetails(movieDetailsResponse.toEntity(idTVShow))
-    }
-
-    private companion object {
-        const val POPULAR = 1
     }
 }

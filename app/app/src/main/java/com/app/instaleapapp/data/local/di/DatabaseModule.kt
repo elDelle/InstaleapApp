@@ -2,6 +2,8 @@ package com.app.instaleapapp.data.local.di
 
 import android.content.Context
 import androidx.room.Room
+import com.app.instaleapapp.BuildConfig
+import com.app.instaleapapp.BuildConfig.DATABASE_NAME
 import com.app.instaleapapp.data.local.Database
 import com.app.instaleapapp.data.local.dao.MoviesDao
 import com.app.instaleapapp.data.local.dao.TVShowsDao
@@ -11,8 +13,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
-
-private const val DATABASE_NAME = "instaleapDB"
 
 @Module
 @InstallIn(SingletonComponent::class)

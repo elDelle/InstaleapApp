@@ -13,9 +13,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.app.instaleapapp.Constants.ON_THE_AIR_TV_SHOWS
+import com.app.instaleapapp.Constants.POPULAR_MOVIES
+import com.app.instaleapapp.Constants.POPULAR_TV_SHOWS
+import com.app.instaleapapp.Constants.TOP_RATED_MOVIES
 import com.app.instaleapapp.R
-import com.app.instaleapapp.presentation.viewmodel.MoviesViewModel
-import com.app.instaleapapp.presentation.viewmodel.TVShowsViewModel
 
 @Composable
 fun CustomMovieDialog(
@@ -37,13 +39,13 @@ fun CustomMovieDialog(
                 DialogOption(
                     setShowDialog,
                     setOption,
-                    MoviesViewModel.POPULAR,
+                    POPULAR_MOVIES,
                     R.string.popular_movies
                 )
                 DialogOption(
                     setShowDialog,
                     setOption,
-                    MoviesViewModel.TOP_RATED,
+                    TOP_RATED_MOVIES,
                     R.string.top_rated_movies
                 )
             }
@@ -71,13 +73,13 @@ fun CustomTVShowDialog(
                 DialogOption(
                     setShowDialog,
                     setOption,
-                    TVShowsViewModel.POPULAR,
+                    POPULAR_TV_SHOWS,
                     R.string.popular_tv_shows
                 )
                 DialogOption(
                     setShowDialog,
                     setOption,
-                    TVShowsViewModel.ON_THE_AIR,
+                    ON_THE_AIR_TV_SHOWS,
                     R.string.on_the_air_tv_shows
                 )
             }

@@ -1,8 +1,10 @@
 package com.app.instaleapapp.presentation.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -15,6 +17,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -23,8 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.app.instaleapapp.R
 import com.app.instaleapapp.domain.model.TVShowDetails
-import com.app.instaleapapp.presentation.viewmodel.TVShowDetailsViewModel
 import com.app.instaleapapp.presentation.utils.NetworkImage
+import com.app.instaleapapp.presentation.viewmodel.TVShowDetailsViewModel
 
 @Composable
 fun TVShowDetails(
@@ -37,7 +40,8 @@ fun TVShowDetails(
     Column(
         Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
+            .verticalScroll(rememberScrollState())
+            .background(Color.White),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -72,13 +76,55 @@ private fun ShowMovieDetail(tvShowDetails: TVShowDetails) {
                 )
             )
         }
+        Row(
+            Modifier
+                .fillMaxSize()
+                .padding(10.dp, 10.dp, 10.dp, 0.dp)
+        ) {
+            Text(
+                text = "Genres: " + tvShowDetails.genres,
+                style = TextStyle(
+                    fontFamily = FontFamily.Default,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 14.sp
+                )
+            )
+        }
         Box(
             Modifier
                 .fillMaxSize()
-                .padding(10.dp, 16.dp, 10.dp, 20.dp)
+                .padding(10.dp, 16.dp, 10.dp, 10.dp)
         ) {
             Text(
                 text = overview.orEmpty(),
+                style = TextStyle(
+                    fontFamily = FontFamily.Default,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 14.sp
+                )
+            )
+        }
+        Row(
+            Modifier
+                .fillMaxSize()
+                .padding(10.dp, 10.dp, 10.dp, 0.dp)
+        ) {
+            Text(
+                text = "Number of seasons: " + tvShowDetails.numberOfSeasons,
+                style = TextStyle(
+                    fontFamily = FontFamily.Default,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 14.sp
+                )
+            )
+        }
+        Row(
+            Modifier
+                .fillMaxSize()
+                .padding(10.dp, 10.dp, 10.dp, 20.dp)
+        ) {
+            Text(
+                text = "Number of episodes: " + tvShowDetails.numberOfEpisodes,
                 style = TextStyle(
                     fontFamily = FontFamily.Default,
                     fontWeight = FontWeight.Normal,

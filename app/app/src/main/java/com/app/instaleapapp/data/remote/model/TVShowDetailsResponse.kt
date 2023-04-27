@@ -20,7 +20,7 @@ data class TVShowDetailsResponse(
     val productionCountries: List<TVShowProductionCountriesItem> = listOf(),
     val id: Int? = null,
 
-    @SerializedName("number_fof_seasons")
+    @SerializedName("number_of_seasons")
     val numberOfSeasons: Int? = null,
 
     @SerializedName("vote_count")

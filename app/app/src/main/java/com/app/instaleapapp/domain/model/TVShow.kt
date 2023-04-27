@@ -1,5 +1,6 @@
 package com.app.instaleapapp.domain.model
 
+import com.app.instaleapapp.Constants.PREFIX_URL
 import com.app.instaleapapp.data.local.models.OnTheAirTVShowEntity
 import com.app.instaleapapp.data.local.models.PopularTVShowEntity
 import com.app.instaleapapp.data.remote.model.TVShowResponse
@@ -25,5 +26,3 @@ fun TVShowResponse.toOnTheAirEntity(): OnTheAirTVShowEntity {
         poster = PREFIX_URL + this@toOnTheAirEntity.posterPath
     }
 }
-
-private const val PREFIX_URL = "https://image.tmdb.org/t/p/w500"

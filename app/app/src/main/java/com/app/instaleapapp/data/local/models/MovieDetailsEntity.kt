@@ -21,6 +21,9 @@ class MovieDetailsEntity {
 
     @ColumnInfo("idMovie")
     var idMovie: Int? = null
+
+    @ColumnInfo("genres")
+    var genres: String? = null
 }
 
 fun MovieDetailsEntity.toDomain(): MovieDetails {
@@ -28,7 +31,8 @@ fun MovieDetailsEntity.toDomain(): MovieDetails {
         this.id,
         this.title,
         this.overview,
-        this.poster
+        this.poster,
+        this.genres
     )
 }
 

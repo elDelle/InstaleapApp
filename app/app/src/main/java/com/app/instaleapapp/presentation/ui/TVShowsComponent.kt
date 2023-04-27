@@ -26,7 +26,8 @@ import com.app.instaleapapp.presentation.utils.NetworkImage
 
 @Composable
 fun TVShowsScreen(
-    tvShowsViewModel: TVShowsViewModel = viewModel(), selectTVShow: (Int) -> Unit
+    tvShowsViewModel: TVShowsViewModel = viewModel(),
+    selectTVShow: (Int) -> Unit
 ) {
     val uiState by tvShowsViewModel.state.collectAsState()
     when {

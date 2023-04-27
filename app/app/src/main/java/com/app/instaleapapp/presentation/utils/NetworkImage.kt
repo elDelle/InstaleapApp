@@ -8,7 +8,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import com.app.instaleapapp.R
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.animation.circular.CircularRevealPlugin
 import com.skydoves.landscapist.animation.crossfade.CrossfadePlugin
@@ -46,7 +48,7 @@ fun NetworkImage(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
-                    text = "image request failed.",
+                    text = LocalContext.current.getString(R.string.image_request_error),
                     style = MaterialTheme.typography.body2
                 )
             }

@@ -21,6 +21,15 @@ class TVShowDetailsEntity {
 
     @ColumnInfo("idTVShow")
     var idTVShow: Int? = null
+
+    @ColumnInfo("numberOfEpisodes")
+    var numberOfEpisodes: Int? = null
+
+    @ColumnInfo("numberOfSeasons")
+    var numberOfSeasons: Int? = null
+
+    @ColumnInfo("genres")
+    var genres: String? = null
 }
 
 fun TVShowDetailsEntity.toDomain(): TVShowDetails {
@@ -28,7 +37,10 @@ fun TVShowDetailsEntity.toDomain(): TVShowDetails {
         this.id,
         this.originalName,
         this.overview,
-        this.poster
+        this.poster,
+        this.numberOfEpisodes,
+        this.numberOfSeasons,
+        this.genres
     )
 }
 
