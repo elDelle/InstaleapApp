@@ -1,26 +1,33 @@
 # InstaleapApp
 
-Para poder ejecutar el app se puede realizar desde el branch main o el branch develop
-En el branch develop esta el paso a paso en commits que se fueron realizando para la creacion del proyecto
+## Architecture
+- [Clean Architecture](https://developer.android.com/topic/architecture)
+  - Data Layer
+  - Domain Layer
+  - Presentation Layer
 
-Simplemente ejecutar el app y correra en emulador o dispositivo
+### Data Layer
+- [Offline First](https://developer.android.com/topic/architecture/data-layer/offline-first?hl=es-419)
+  - [Repository Pattern](https://developer.android.com/codelabs/basic-android-kotlin-training-repository-pattern?hl=es-419#0)
+	- Local Source (Room db)
+	- Remote Source (Retrofit)
 
-### Arquitectura
-Se opto por usar Clean architecture (data - domain - presentation)
-Como patron de arquitectura se uso MVVM
+## Domain Layer
+-  UseCases
 
-### UI
-Se opto por usar compose para la creacion de la UI
+# Presentation Layer
+- [MVVM](https://developer.android.com/topic/libraries/architecture/viewmodel?hl=es-419)
+- [Android Compose](https://developer.android.com/jetpack/compose?gclid=CjwKCAjwuqiiBhBtEiwATgvixCPkjODF0ui5O6f2EKScD4t3rmicoktvNZJDll3b_dXqcch_Qx7nfBoC2O0QAvD_BwE&gclsrc=aw.ds&hl=es-419)
 
-### Base de datos
-Se uso el ORM Room
+# Libraries
+- [Flow](https://developer.android.com/kotlin/flow?hl=es-419)
+- [Coroutines](https://developer.android.com/kotlin/coroutines?gclid=Cj0KCQjwxYOiBhC9ARIsANiEIfZsPrl2oyV57TqpHPGyFWzrPfFh6wP7pIVzL4CFQS7ynxdRCkzLKXUaAmMlEALw_wcB&gclsrc=aw.ds&hl=es-419)
+- [StateFlow](https://developer.android.com/kotlin/flow/stateflow-and-sharedflow?hl=es-419)
+- [Compose](https://developer.android.com/jetpack/compose?gclid=Cj0KCQjwxYOiBhC9ARIsANiEIfZAsMrrOjy3ChL5A81IvlStavnwQYHeVQ1ra2W_3ixes5V1258yzokaAtl0EALw_wcB&gclsrc=aw.ds&hl=es-419)
+- [Hilt](https://developer.android.com/training/dependency-injection/hilt-android?hl=es-419)
+- [Retrofit](https://square.github.io/retrofit/)
 
-### Inyeccion de dependencias
-Para esto se uso Hilt
 
-### Unit tests
-Se implementaron unit tests para el viewmodel y el repository, se uso turbine
-
-### Conexion a servicios web
-Se uso Retrofit
-
+## Unit Test	
+- Repository
+- ViewModel
