@@ -1,0 +1,28 @@
+ext {
+    //Compose
+    navigationComposeVersion = '2.5.3'
+
+    // Retrofit
+    retrofitVersion = "2.9.0"
+    retrofitSerializationVersion = "0.8.0"
+    retrofitInterceptorVersion = "5.0.0-alpha.3"
+
+    // Hilt
+    hiltVersion = '2.45'
+
+    //Compose
+    navigationComposeVersion = "2.6.0-beta01"
+
+    //Room
+    roomVersion = '2.5.1'
+
+    //NetworkImage
+    networkImageVersion = '2.1.11'
+
+    //Testing
+    mockkVersion = '1.13.5'
+    coroutinesTestVersion = '1.6.4'
+    turbineVersion = '0.12.3'
+    kotlinTestVersion = '1.8.20'
+    coreTestingVersion = '2.2.0'
+}

@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">InstaleapApp</string>
+    <string name="popular_movies">Popular Movies</string>
+    <string name="top_rated_movies">Top Rated Movies</string>
+    <string name="popular_tv_shows">Popular TV Shows</string>
+    <string name="on_the_air_tv_shows">On the air TV Shows</string>
+    <string name="error">Ocurrió un error</string>
+    <string name="movies">Movies</string>
+    <string name="tv_shows">TV Shows</string>
+    <string name="image_request_error">Image request failed.</string>
 </resources>
