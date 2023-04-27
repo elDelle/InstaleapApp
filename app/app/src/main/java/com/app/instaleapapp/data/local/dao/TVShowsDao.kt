@@ -3,6 +3,9 @@ package com.app.instaleapapp.data.local.dao
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
+import com.app.instaleapapp.data.local.models.OnTheAirTVShowEntity
+import com.app.instaleapapp.data.local.models.PopularTVShowEntity
+import com.app.instaleapapp.data.local.models.TVShowDetailsEntity
 
 @Dao
 interface TVShowsDao {

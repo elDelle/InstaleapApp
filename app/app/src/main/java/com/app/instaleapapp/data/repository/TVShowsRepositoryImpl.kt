@@ -1,9 +1,10 @@
 package com.app.instaleapapp.data.repository
 
 import com.app.instaleapapp.data.local.dao.TVShowsDao
+import com.app.instaleapapp.data.local.models.toDomain
+import com.app.instaleapapp.data.remote.Api
 import com.app.instaleapapp.data.remote.model.TVShowDetailsResponse
 import com.app.instaleapapp.data.remote.model.TVShowResponse
-import com.app.instaleapapp.data.remote.Api
 import com.app.instaleapapp.domain.model.TVShow
 import com.app.instaleapapp.domain.model.TVShowDetails
 import com.app.instaleapapp.domain.model.toEntity

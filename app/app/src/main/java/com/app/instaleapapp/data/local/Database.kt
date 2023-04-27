@@ -4,6 +4,12 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.app.instaleapapp.data.local.dao.MoviesDao
 import com.app.instaleapapp.data.local.dao.TVShowsDao
+import com.app.instaleapapp.data.local.models.MovieDetailsEntity
+import com.app.instaleapapp.data.local.models.OnTheAirTVShowEntity
+import com.app.instaleapapp.data.local.models.PopularMovieEntity
+import com.app.instaleapapp.data.local.models.PopularTVShowEntity
+import com.app.instaleapapp.data.local.models.TVShowDetailsEntity
+import com.app.instaleapapp.data.local.models.TopRatedMovieEntity
 
 private const val DATABASE_VERSION = 1
 

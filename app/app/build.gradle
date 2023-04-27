@@ -87,7 +87,6 @@ dependencies {
     implementation "com.github.skydoves:landscapist-animation:2.1.11"
 
     //Room
-    //Room
     implementation "androidx.room:room-ktx:$rootProject.ext.roomVersion"
     implementation "androidx.room:room-runtime:$rootProject.ext.roomVersion"
     annotationProcessor "androidx.room:room-compiler:$rootProject.ext.roomVersion"
@@ -101,4 +100,11 @@ dependencies {
             because("kotlin-stdlib-jdk8 is now a part of kotlin-stdlib")
         }
     }
+
+    //Test
+    testImplementation 'io.mockk:mockk:1.13.5'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
+    testImplementation 'app.cash.turbine:turbine:0.12.3'
+    testImplementation 'org.jetbrains.kotlin:kotlin-test:1.8.20'
+    testImplementation 'androidx.arch.core:core-testing:2.2.0'
 }
