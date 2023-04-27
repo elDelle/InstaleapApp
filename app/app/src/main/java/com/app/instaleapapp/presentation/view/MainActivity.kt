@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -53,11 +55,13 @@ class MainActivity : ComponentActivity() {
 
     private fun initView() {
         setContent {
+            val isMoviesListVisible = remember { mutableStateOf(true) }
             MainScreen(
                 moviesViewModel,
                 movieDetailsViewModel,
                 tvShowsViewModel,
-                tvShowDetailsViewModel
+                tvShowDetailsViewModel,
+                isMoviesListVisible
             )
         }
     }
@@ -73,15 +77,17 @@ fun MainScreen(
     moviesViewModel: MoviesViewModel = viewModel(),
     moviesDetailsViewModel: MovieDetailsViewModel = viewModel(),
     tvShowsViewModel: TVShowsViewModel = viewModel(),
-    tvShowDetailsViewModel: TVShowDetailsViewModel = viewModel()
+    tvShowDetailsViewModel: TVShowDetailsViewModel = viewModel(),
+    isMoviesListVisible: MutableState<Boolean>
 ) {
 
-    StreamingScreen(moviesViewModel, tvShowsViewModel)
+    StreamingScreen(moviesViewModel, tvShowsViewModel, isMoviesListVisible)
     ContentView(
         moviesViewModel,
         moviesDetailsViewModel,
         tvShowsViewModel,
-        tvShowDetailsViewModel
+        tvShowDetailsViewModel,
+        isMoviesListVisible
     )
 }
 
@@ -126,13 +132,14 @@ fun ContentView(
     moviesViewModel: MoviesViewModel,
     movieDetailsViewModel: MovieDetailsViewModel,
     tvShowsViewModel: TVShowsViewModel,
-    tvShowDetailsViewModel: TVShowDetailsViewModel
+    tvShowDetailsViewModel: TVShowDetailsViewModel,
+    isMoviesListVisible: MutableState<Boolean>
 ) {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = NavScreen.Home.route) {
         composable(NavScreen.Home.route) {
-            StreamingScreen(moviesViewModel, tvShowsViewModel) { idSelected, typeStream ->
+            StreamingScreen(moviesViewModel, tvShowsViewModel, isMoviesListVisible) { idSelected, typeStream ->
                 if (typeStream == MOVIES) {
                     navController.navigate("${NavScreen.MovieDetails.route}/$idSelected")
                 } else {

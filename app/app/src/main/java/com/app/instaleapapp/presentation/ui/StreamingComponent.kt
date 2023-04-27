@@ -3,8 +3,7 @@ package com.app.instaleapapp.presentation.ui
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.app.instaleapapp.Constants.MOVIES
@@ -17,9 +16,9 @@ import com.app.instaleapapp.presentation.viewmodel.TVShowsViewModel
 fun StreamingScreen(
     moviesViewModel: MoviesViewModel = viewModel(),
     tvShowsViewModel: TVShowsViewModel = viewModel(),
+    isMoviesListVisible: MutableState<Boolean>,
     streamSelected: (Int, Int) -> Unit = { _, _ -> }
 ) {
-    val isMoviesListVisible = remember { mutableStateOf(true) }
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Toolbar(

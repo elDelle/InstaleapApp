@@ -33,7 +33,9 @@ class TVShowDetailsViewModel @Inject constructor(
                     it.copy(response = tvShowDetails, isError = false, isProgress = false)
                 }
             }.onFailure {
-                //TODO
+                _state.update {
+                    it.copy(isError = true, isProgress = false)
+                }
             }
         }
     }
